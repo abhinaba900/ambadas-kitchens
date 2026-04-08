@@ -30,6 +30,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${outfit.variable} ${inter.variable} h-full antialiased scroll-smooth`}
+      suppressHydrationWarning
     >
       <body
         cz-shortcut-listen="true"

@@ -7,7 +7,7 @@ import { WhyUs } from "@/components/sections/WhyUs";
 import { FactoryUSP } from "@/components/sections/FactoryUSP";
 import { Services } from "@/components/sections/Services";
 import { Process } from "@/components/sections/Process";
-import { PricingCalculator } from "@/components/sections/PricingCalculator";
+import { PricingCalculator } from "@/components/sections/pricing/PricingCalculator";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { StickyMobileBar } from "@/components/ui/StickyMobileBar";

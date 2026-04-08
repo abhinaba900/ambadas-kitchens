@@ -156,7 +156,7 @@ export function ConsultationModal() {
                             <input 
                               required
                               type="tel" 
-                              placeholder="+91"
+                              placeholder="+91 94483 96322"
                               className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all"
                             />
                           </div>

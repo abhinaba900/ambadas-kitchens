@@ -29,6 +29,17 @@ export function Header() {
   const transparentNavLinkColor = isLightPage ? "text-slate-600" : "text-white/80";
 
   useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
@@ -53,15 +64,15 @@ export function Header() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-white/90 backdrop-blur-md shadow-md py-3"
+        isScrolled || isMobileMenuOpen
+          ? "bg-white shadow-md py-3"
           : "bg-transparent py-5",
       )}
     >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-0 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <AmbadasLogo 
-            variant={!isScrolled && isDarkHeroPage ? "white" : "original"} 
+            variant={(isScrolled || isMobileMenuOpen) ? "original" : (isDarkHeroPage ? "white" : "original")} 
           />
         </Link>
 
@@ -95,7 +106,7 @@ export function Header() {
             href="tel:+919448396322"
             className={cn(
               "p-2 rounded-full",
-              isScrolled
+              isScrolled || isMobileMenuOpen
                 ? "bg-primary text-white"
                 : "bg-primary/10 text-primary",
             )}
@@ -106,7 +117,7 @@ export function Header() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={cn(
               "p-2 transition-colors",
-              isScrolled
+              isScrolled || isMobileMenuOpen
                 ? "text-primary"
                 : isDarkHeroPage
                   ? "text-white"
@@ -122,7 +133,10 @@ export function Header() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-[60px] bg-white z-40 md:hidden flex flex-col p-6 animate-in slide-in-from-top duration-300">
+        <div 
+          className="fixed inset-0 top-[68px] bg-white z-40 md:hidden flex flex-col p-6 animate-in slide-in-from-top duration-300 touch-none overscroll-none"
+          onPointerMove={(e) => e.stopPropagation()}
+        >
           <nav className="flex flex-col gap-6 text-center pt-10">
             {navLinks.map((link) => (
               <Link
@@ -149,5 +163,6 @@ export function Header() {
         </div>
       )}
     </header>
+
   );
 }

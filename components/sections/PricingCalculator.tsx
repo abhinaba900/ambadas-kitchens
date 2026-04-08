@@ -206,7 +206,7 @@ export function PricingCalculator() {
             </p>
             
             <div className="space-y-4 w-full">
-              <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="w-full">
+              <a href="https://wa.me/919448396322" target="_blank" rel="noopener noreferrer" className="w-full">
                 <Button variant="accent" size="lg" className="w-full text-primary h-16 text-lg font-black group">
                   <FaWhatsapp size={22} className="mr-3" />
                   GET EXACT QUOTE ON WHATSAPP

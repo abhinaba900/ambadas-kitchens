@@ -2,74 +2,103 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
-import { Calculator, ChevronRight, Info, Layout, Layers, Box, Check, Ruler } from "lucide-react";
+import { Calculator, ChevronRight, Info, Layout, Layers, Box, Check, Ruler, Home } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
+const LAYOUTS = [
+  { id: "1BHK", name: "1 BHK", rooms: ["kitchen", "living", "masterBed"] },
+  { id: "2BHK", name: "2 BHK", rooms: ["kitchen", "living", "masterBed", "guestBed"] },
+  { id: "3BHK", name: "3 BHK", rooms: ["kitchen", "living", "masterBed", "kidsBed", "guestBed", "dining"] },
+  { id: "4BHK", name: "4 BHK", rooms: ["kitchen", "living", "masterBed", "kidsBed", "guestBed", "dining", "foyer"] },
+  { id: "Villa", name: "Villa", rooms: ["kitchen", "living", "masterBed", "kidsBed", "guestBed", "dining", "foyer", "utility"] },
+];
+
+const ROOM_OPTIONS = [
+  { id: "kitchen", name: "Modular Kitchen", pricePerSqFt: 1800, defaultSqFt: 80, min: 40, max: 200, icon: <Layout className="w-5 h-5" /> },
+  { id: "living", name: "Living Room (TV Unit + Decor)", pricePerSqFt: 1200, defaultSqFt: 60, min: 20, max: 150, icon: <Box className="w-5 h-5" /> },
+  { id: "masterBed", name: "Master Bedroom (Wardrobe + Bed)", pricePerSqFt: 1400, defaultSqFt: 120, min: 60, max: 250, icon: <Layers className="w-5 h-5" /> },
+  { id: "kidsBed", name: "Kids' Bedroom", pricePerSqFt: 1300, defaultSqFt: 100, min: 40, max: 200, icon: <Layers className="w-5 h-5 opacity-70" /> },
+  { id: "guestBed", name: "Guest Bedroom", pricePerSqFt: 1250, defaultSqFt: 90, min: 40, max: 180, icon: <Layers className="w-5 h-5 opacity-40" /> },
+  { id: "dining", name: "Dining Area", pricePerSqFt: 1100, defaultSqFt: 40, min: 20, max: 100, icon: <Layout className="w-5 h-5 rotate-90" /> },
+  { id: "foyer", name: "Foyer / Shoe Rack", pricePerSqFt: 1500, defaultSqFt: 20, min: 10, max: 50, icon: <Ruler className="w-5 h-5" /> },
+  { id: "utility", name: "Utility / Balcony", pricePerSqFt: 1000, defaultSqFt: 30, min: 15, max: 80, icon: <Box size={18} /> },
+];
+
+const PACKAGE_TIERS = [
+  { 
+    id: "essential", 
+    name: "Essential", 
+    multiplier: 1.0, 
+    desc: "Laminate + Commercial Plywood",
+    highlight: "Value for Money"
+  },
+  { 
+    id: "premium", 
+    name: "Premium", 
+    multiplier: 1.4, 
+    desc: "Acrylic/Membrane + BWP Plywood",
+    highlight: "Most Popular"
+  },
+  { 
+    id: "elite", 
+    name: "Elite", 
+    multiplier: 1.9, 
+    desc: "HDMR/PU + High-Gloss Glass",
+    highlight: "Uber Luxury"
+  },
+];
+
 export function PricingCalculator() {
-  const [kitchenType, setKitchenType] = useState("L-Shape");
-  const [size, setSize] = useState(80); // in running feet
-  const [material, setMaterial] = useState("Plywood");
-  const [finish, setFinish] = useState("Laminate");
-  const [addons, setAddons] = useState<string[]>([]);
+  const [layout, setLayout] = useState("2BHK");
+  const [selectedRooms, setSelectedRooms] = useState<string[]>(LAYOUTS[1].rooms);
+  const [roomSizes, setRoomSizes] = useState<Record<string, number>>(
+    ROOM_OPTIONS.reduce((acc, room) => ({ ...acc, [room.id]: room.defaultSqFt }), {})
+  );
+  const [packageTier, setPackageTier] = useState("premium");
+  const [includeServices, setIncludeServices] = useState(false);
   const [estimate, setEstimate] = useState({ min: 0, max: 0 });
 
-  const kitchenTypes = [
-    { name: "L-Shape", icon: <Layout className="w-4 h-4" /> },
-    { name: "U-Shape", icon: <Layout className="w-4 h-4 rotate-90" /> },
-    { name: "Straight", icon: <Layout className="w-4 h-4" /> },
-    { name: "Island", icon: <Box className="w-4 h-4" /> }
-  ];
+  const handleLayoutChange = (layoutId: string) => {
+    setLayout(layoutId);
+    const layoutConfig = LAYOUTS.find(l => l.id === layoutId);
+    if (layoutConfig) {
+      setSelectedRooms(layoutConfig.rooms);
+    }
+  };
 
-  const materials = [
-    { name: "MDF (Eco)", multiplier: 0.8 },
-    { name: "Plywood (Standard)", multiplier: 1 },
-    { name: "Premium HDMR", multiplier: 1.2 },
-    { name: "Solid Wood", multiplier: 1.8 }
-  ];
-
-  const finishes = [
-    { name: "Laminate", multiplier: 1 },
-    { name: "Membrane", multiplier: 1.25 },
-    { name: "Acrylic", multiplier: 1.5 },
-    { name: "PU Lacquer", multiplier: 2 }
-  ];
-
-  const addonOptions = [
-    { id: "acc", name: "Modern Accessories", price: 25000 },
-    { id: "app", name: "Premium Appliances", price: 45000 },
-    { id: "lgt", name: "Smart Lighting", price: 15000 },
-    { id: "str", name: "Extra Storage Units", price: 30000 }
-  ];
-
-  useEffect(() => {
-    // Basic calculation logic for demo
-    const basePricePerFoot = 8500;
-    const matMult = materials.find(m => m.name === material)?.multiplier || 1;
-    const finishMult = finishes.find(f => f.name === finish)?.multiplier || 1;
-    
-    let baseTotal = size * basePricePerFoot * matMult * finishMult;
-    
-    // Add-on totals
-    const addonsTotal = addons.reduce((acc, currId) => {
-      const option = addonOptions.find(o => o.id === currId);
-      return acc + (option?.price || 0);
-    }, 0);
-    
-    const total = baseTotal + addonsTotal;
-    
-    setEstimate({
-      min: Math.floor((total * 0.9) / 5000) * 5000,
-      max: Math.ceil((total * 1.1) / 5000) * 5000,
-    });
-  }, [kitchenType, size, material, finish, addons]);
-
-  const toggleAddon = (id: string) => {
-    setAddons(prev => 
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+  const toggleRoom = (roomId: string) => {
+    setSelectedRooms(prev => 
+      prev.includes(roomId) ? prev.filter(r => r !== roomId) : [...prev, roomId]
     );
   };
+
+  const updateRoomSize = (roomId: string, size: number) => {
+    setRoomSizes(prev => ({ ...prev, [roomId]: size }));
+  };
+
+  useEffect(() => {
+    const tier = PACKAGE_TIERS.find(t => t.id === packageTier);
+    const multiplier = tier?.multiplier || 1;
+    
+    let baseTotal = selectedRooms.reduce((acc, roomId) => {
+      const room = ROOM_OPTIONS.find(r => r.id === roomId);
+      const size = roomSizes[roomId] || room?.defaultSqFt || 0;
+      return acc + (size * (room?.pricePerSqFt || 0));
+    }, 0);
+
+    baseTotal *= multiplier;
+
+    if (includeServices) {
+      baseTotal *= 1.25; // Civil Services (Painting, False Ceiling, Electrical etc)
+    }
+
+    setEstimate({
+      min: Math.floor((baseTotal * 0.9) / 5000) * 5000,
+      max: Math.ceil((baseTotal * 1.1) / 5000) * 5000,
+    });
+  }, [selectedRooms, roomSizes, packageTier, includeServices]);
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -87,133 +116,173 @@ export function PricingCalculator() {
             
             {/* INPUT SECTION */}
             <div className="lg:col-span-7 bg-slate-50 p-8 md:p-12 rounded-[3rem] border border-slate-100 shadow-sm">
-              <div className="space-y-10">
+              <div className="space-y-12">
                 
-                {/* 1. Kitchen Type */}
+                {/* Step 1: Layout */}
                 <div>
                   <label className="flex items-center gap-3 text-primary font-bold text-lg mb-6">
                     <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">1</span>
-                    Kitchen Layout
+                    Select Your Flat Layout
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {kitchenTypes.map((type) => (
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                    {LAYOUTS.map((l) => (
                       <button
-                        key={type.name}
-                        onClick={() => setKitchenType(type.name)}
+                        key={l.id}
+                        onClick={() => handleLayoutChange(l.id)}
                         className={cn(
-                          "py-4 px-3 rounded-2xl text-sm font-bold transition-all border-2 flex flex-col items-center gap-2",
-                          kitchenType === type.name
-                            ? "bg-primary text-white border-primary shadow-lg scale-[1.02]"
+                          "py-4 px-2 rounded-2xl text-sm font-bold transition-all border-2 flex flex-col items-center gap-2",
+                          layout === l.id
+                            ? "bg-primary text-white border-primary shadow-lg scale-[1.05]"
                             : "bg-white text-slate-500 border-slate-100 hover:border-primary/20"
                         )}
                       >
-                        {type.icon}
-                        {type.name}
+                        <Home className="w-5 h-5" />
+                        {l.name}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* 2. Size Slider */}
-                <div>
-                  <div className="flex justify-between items-center mb-6">
-                    <label className="flex items-center gap-3 text-primary font-bold text-lg">
-                      <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">2</span>
-                      Kitchen Size (in Feet)
-                    </label>
-                    <div className="bg-primary/10 text-primary px-4 py-1.5 rounded-xl text-lg font-black flex items-center gap-2">
-                       <Ruler size={18} /> {size} ft.
-                    </div>
-                  </div>
-                  <input
-                    type="range"
-                    min="30"
-                    max="150"
-                    step="5"
-                    value={size}
-                    onChange={(e) => setSize(parseInt(e.target.value))}
-                    className="w-full h-3 bg-white border border-slate-200 rounded-full appearance-none cursor-pointer accent-primary"
-                  />
-                  <div className="flex justify-between mt-4 text-xs text-slate-400 font-bold uppercase tracking-wider">
-                    <span>Compact (30ft)</span>
-                    <span>Standard (80ft)</span>
-                    <span>Large (150ft)</span>
-                  </div>
-                </div>
-
-                {/* 3. Material & Finish */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div>
-                    <label className="flex items-center gap-3 text-primary font-bold text-lg mb-6">
-                      <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">3</span>
-                      Core Material
-                    </label>
-                    <div className="flex flex-col gap-2">
-                      {materials.map((m) => (
-                        <button
-                          key={m.name}
-                          onClick={() => setMaterial(m.name)}
-                          className={cn(
-                            "flex items-center justify-between p-4 rounded-2xl border-2 font-bold text-sm transition-all",
-                            material === m.name
-                              ? "bg-white border-accent shadow-md text-primary"
-                              : "bg-white/50 border-white text-slate-400 hover:border-primary/10 hover:bg-white"
-                          )}
-                        >
-                          {m.name}
-                          {material === m.name && <Check size={18} className="text-secondary" />}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="flex items-center gap-3 text-primary font-bold text-lg mb-6">
-                      <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">4</span>
-                      Surface Finish
-                    </label>
-                    <div className="flex flex-col gap-2">
-                      {finishes.map((f) => (
-                        <button
-                          key={f.name}
-                          onClick={() => setFinish(f.name)}
-                          className={cn(
-                            "flex items-center justify-between p-4 rounded-2xl border-2 font-bold text-sm transition-all",
-                            finish === f.name
-                              ? "bg-white border-accent shadow-md text-primary"
-                              : "bg-white/50 border-white text-slate-400 hover:border-primary/10 hover:bg-white"
-                          )}
-                        >
-                          {f.name}
-                          {finish === f.name && <Check size={18} className="text-secondary" />}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* 4. Add-ons */}
+                {/* Step 2: Rooms */}
                 <div>
                   <label className="flex items-center gap-3 text-primary font-bold text-lg mb-6">
-                    <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">5</span>
-                    Premium Add-ons
+                    <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">2</span>
+                    Select Rooms & Sizes (Sq. Ft.)
                   </label>
-                  <div className="flex flex-wrap gap-2">
-                    {addonOptions.map((opt) => (
+                  <div className="grid grid-cols-1 gap-4">
+                    {ROOM_OPTIONS.map((room) => {
+                      const isSelected = selectedRooms.includes(room.id);
+                      const currentSize = roomSizes[room.id] || room.defaultSqFt;
+                      const roomMultiplier = PACKAGE_TIERS.find(t => t.id === packageTier)?.multiplier || 1;
+                      const roomSubtotal = currentSize * room.pricePerSqFt * roomMultiplier;
+
+                      return (
+                        <div 
+                          key={room.id}
+                          className={cn(
+                            "rounded-[2rem] border-2 transition-all overflow-hidden",
+                            isSelected
+                              ? "bg-white border-accent shadow-md"
+                              : "bg-white/50 border-white text-slate-400 hover:border-primary/10"
+                          )}
+                        >
+                          <div 
+                            onClick={() => toggleRoom(room.id)}
+                            className="flex items-center justify-between p-5 cursor-pointer group"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className={cn(
+                                "w-12 h-12 rounded-2xl flex items-center justify-center transition-colors shadow-sm",
+                                isSelected ? "bg-accent/20 text-accent" : "bg-white border border-slate-100 text-slate-400 group-hover:bg-primary/5"
+                              )}>
+                                {room.icon}
+                              </div>
+                              <div className="text-left">
+                                <p className={cn("font-bold text-base transition-colors", isSelected ? "text-primary" : "text-slate-500")}>
+                                  {room.name}
+                                </p>
+                                <p className="text-[10px] uppercase tracking-widest font-black opacity-60">
+                                  {isSelected ? `${currentSize} Sq. Ft. • ~${formatCurrency(roomSubtotal)}` : `Starts at ~${formatCurrency(room.defaultSqFt * room.pricePerSqFt)}`}
+                                </p>
+                              </div>
+                            </div>
+                            <div className={cn(
+                              "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
+                              isSelected ? "bg-secondary border-secondary text-white" : "border-slate-200"
+                            )}>
+                              {isSelected && <Check size={14} strokeWidth={4} />}
+                            </div>
+                          </div>
+
+                          <AnimatePresence>
+                            {isSelected && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="px-6 pb-6 pt-2 border-t border-slate-50"
+                              >
+                                <div className="space-y-4">
+                                  <div className="flex justify-between items-center text-xs font-bold uppercase text-slate-400">
+                                    <span>Area Size</span>
+                                    <span className="text-primary bg-primary/5 px-2 py-0.5 rounded-lg">{currentSize} sqft</span>
+                                  </div>
+                                  <input
+                                    type="range"
+                                    min={room.min}
+                                    max={room.max}
+                                    step="5"
+                                    value={currentSize}
+                                    onChange={(e) => updateRoomSize(room.id, parseInt(e.target.value))}
+                                    className="w-full h-2 bg-slate-100 rounded-full appearance-none cursor-pointer accent-accent"
+                                  />
+                                  <div className="flex justify-between text-[10px] text-slate-300 font-bold">
+                                    <span>{room.min}ft</span>
+                                    <span>{room.max}ft</span>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Step 3: Tier */}
+                <div>
+                  <label className="flex items-center gap-3 text-primary font-bold text-lg mb-6">
+                    <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">3</span>
+                    Choose Quality & Finish
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {PACKAGE_TIERS.map((tier) => (
                       <button
-                        key={opt.id}
-                        onClick={() => toggleAddon(opt.id)}
+                        key={tier.id}
+                        onClick={() => setPackageTier(tier.id)}
                         className={cn(
-                          "py-3 px-6 rounded-full text-sm font-bold transition-all border-2",
-                          addons.includes(opt.id)
-                            ? "bg-primary text-white border-primary shadow-md"
-                            : "bg-white text-slate-500 border-slate-100 hover:border-primary/10"
+                          "relative p-6 rounded-3xl border-2 text-left transition-all overflow-hidden",
+                          packageTier === tier.id
+                            ? "bg-white border-accent shadow-xl scale-[1.02]"
+                            : "bg-white/50 border-white text-slate-500 hover:bg-white hover:border-primary/10"
                         )}
                       >
-                        {opt.name}
+                        {packageTier === tier.id && (
+                          <div className="absolute top-0 right-0 bg-accent text-primary px-3 py-1 text-[10px] font-black uppercase rounded-bl-xl tracking-tighter">
+                            {tier.highlight}
+                          </div>
+                        )}
+                        <h4 className="font-bold text-primary mb-1">{tier.name}</h4>
+                        <p className="text-xs text-slate-500 leading-relaxed">{tier.desc}</p>
                       </button>
                     ))}
                   </div>
+                </div>
+
+                {/* Step 4: Services */}
+                <div className="p-6 bg-primary/5 rounded-[2rem] border border-primary/10 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm">
+                      <Layers size={22} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-primary text-sm">Include Civil & Services</h4>
+                      <p className="text-[11px] text-slate-500">Painting, False Ceiling, Electrical Work (+25%)</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => setIncludeServices(!includeServices)}
+                    className={cn(
+                      "w-12 h-6 rounded-full transition-colors relative flex items-center px-1",
+                      includeServices ? "bg-accent" : "bg-slate-300"
+                    )}
+                  >
+                    <motion.div 
+                      animate={{ x: includeServices ? 24 : 0 }}
+                      className="w-4 h-4 bg-white rounded-full shadow-sm" 
+                    />
+                  </button>
                 </div>
 
               </div>
@@ -223,7 +292,6 @@ export function PricingCalculator() {
             <div className="lg:col-span-5">
               <div className="sticky top-28 space-y-6">
                 <div className="bg-primary rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group">
-                  {/* Decorative Elements */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2" />
                   
                   <div className="relative z-10 flex flex-col items-center text-center">
@@ -232,7 +300,7 @@ export function PricingCalculator() {
                     </div>
                     
                     <span className="text-accent font-black text-sm uppercase tracking-[0.2em] mb-4">
-                      ESTIMATED PROJECT COST
+                      {layout} INTERIOR ESTIMATE
                     </span>
                     
                     <AnimatePresence mode="wait">
@@ -252,16 +320,31 @@ export function PricingCalculator() {
                     </AnimatePresence>
 
                     <p className="text-white/60 text-sm font-medium mb-10 max-w-xs mx-auto italic">
-                      “Final price may vary based on design and site conditions.”
+                      Disclaimer: This is a rough factory-cost estimate. Final pricing may vary based on exact measurements.
                     </p>
 
                     <div className="w-full space-y-4">
-                      <a href="https://wa.me/919448396322" target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-[#25D366] text-white rounded-2xl font-bold hover:scale-105 transition-all shadow-xl group">
+                      <a 
+                        href={`https://wa.me/919448396322?text=Hello Ambadas Kitchens! I just checked your ${layout} pricing calculator.
+
+Room Breakdown:
+${selectedRooms.map(id => `- ${ROOM_OPTIONS.find(r => r.id === id)?.name}: ${roomSizes[id]} sqft`).join('\n')}
+
+Quality Tier: ${packageTier.toUpperCase()}
+Services Included: ${includeServices ? 'YES (Painting/Ceiling)' : 'NO'}
+
+Total Estimated Cost: ${formatCurrency(estimate.min)} - ${formatCurrency(estimate.max)}
+
+Please share a detailed quote!`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-[#25D366] text-white rounded-2xl font-bold hover:scale-105 transition-all shadow-xl group text-center"
+                      >
                         <FaWhatsapp size={22} className="mr-3" />
-                        WHATSAPP FOR EXACT QUOTE
+                        WHATSAPP ESTIMATE
                       </a>
                       <p className="text-white/40 text-xs font-bold uppercase tracking-wider">
-                        Get exact costing in 5 mins on WhatsApp.
+                        Get exact pricing in 10 mins on WhatsApp.
                       </p>
                     </div>
                   </div>
@@ -272,9 +355,9 @@ export function PricingCalculator() {
                     <Info size={18} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-primary mb-1">Detailed Breakdown Included</h4>
+                    <h4 className="font-bold text-primary mb-1">What's in your Estimate?</h4>
                     <p className="text-slate-500 text-sm leading-relaxed">
-                      This range covers basic cabinets, internal accessories, and expert installation at your site.
+                      Includes 18mm BWP Plywood/HDMR cabinets, German hardware, designer handles, and factory-finish installation.
                     </p>
                   </div>
                 </div>

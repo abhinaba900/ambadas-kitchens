@@ -52,7 +52,7 @@ export function WardrobeCTA() {
                 WhatsApp Now
               </button>
             </a>
-            <a href="tel:919448396322" className="w-full sm:w-auto">
+            <a href="tel:+919448396322" className="w-full sm:w-auto">
               <button className="w-full flex items-center justify-center gap-3 px-5 py-4 bg-white text-primary rounded-2xl font-bold hover:bg-slate-50 transition-all shadow-xl uppercase tracking-widest text-sm">
                 <Phone size={24} />
                 Call 94483 96322

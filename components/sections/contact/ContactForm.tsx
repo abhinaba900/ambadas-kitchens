@@ -68,7 +68,7 @@ export function ContactForm() {
                       <input 
                         required
                         type="tel" 
-                        placeholder="+91 98765 43210"
+                        placeholder="+91 94483 96322"
                         className="w-full h-14 bg-white border border-slate-200 rounded-xl px-4 focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all placeholder:text-slate-300"
                       />
                     </div>
