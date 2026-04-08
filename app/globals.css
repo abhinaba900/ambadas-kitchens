@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  
+  /* Base Colors (Fallbacks for background-color, and used for text/borders) */
+  --color-primary: #0F3D2E;
+  --color-primary-light: #1A5C48;
+  --color-accent: #F4C430;
+  --color-accent-dark: #D9AD26;
+  
+  /* Background Gradients (Mapped to the same keys so bg-primary/bg-accent use them) */
+  --background-image-primary: linear-gradient(135deg, #0F3D2E, #1F6F5B);
+  --background-image-primary-light: linear-gradient(135deg, #1A5C48, #2E8B72);
+  --background-image-accent: linear-gradient(135deg, #F4C430, #FFE27A);
+  --background-image-accent-dark: linear-gradient(135deg, #D9AD26, #F4D03F);
+  
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply antialiased text-slate-900 bg-white;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+  
+  .section-padding {
+    @apply py-16 md:py-24 px-6 md:px-12 lg:px-24;
+  }
 }
