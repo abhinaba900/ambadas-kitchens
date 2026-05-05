@@ -35,7 +35,7 @@ export function InteriorsCTA() {
               variant="outline" 
               size="lg" 
               className="h-20 text-xl font-bold border-white text-white hover:bg-white hover:text-primary transition-all duration-500"
-              onClick={openConsultationModal}
+              onClick={() => openConsultationModal()}
             >
               <Calendar className="mr-3 w-6 h-6" />
               Book Site Visit

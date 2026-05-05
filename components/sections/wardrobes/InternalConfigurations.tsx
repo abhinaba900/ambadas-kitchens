@@ -73,10 +73,9 @@ export function InternalConfigurations() {
               className="relative h-[600px] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white/5"
             >
               <Image 
-                src="https://images.unsplash.com/photo-1558060370-d644479cb6f7?q=80&w=2070&auto=format&fit=crop" 
-                alt="Internal Wardrobe Configuration" 
+                src="/portfolio/wardrobes/wardrobe-15.webp" 
+                alt="Internal Wardrobe Configuration with Shelves" 
                 fill
-                unoptimized
                 className="object-cover brightness-90 group-hover:brightness-100 transition-all duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />

@@ -5,7 +5,7 @@ import { KitchenHero } from "@/components/sections/kitchens/KitchenHero";
 import { KitchenTypes } from "@/components/sections/kitchens/KitchenTypes";
 import { DesignStyles } from "@/components/sections/kitchens/DesignStyles";
 import { MaterialOptions } from "@/components/sections/kitchens/MaterialOptions";
-import { FeaturedProjects } from "@/components/sections/kitchens/FeaturedProjects";
+// import { FeaturedProjects } from "@/components/sections/kitchens/FeaturedProjects";
 import { WhyKitchens } from "@/components/sections/kitchens/WhyKitchens";
 import { PriceIndication } from "@/components/sections/kitchens/PriceIndication";
 import { KitchenProcess } from "@/components/sections/kitchens/KitchenProcess";
@@ -32,7 +32,7 @@ export default function KitchensPage() {
         <ExpertSuggestion />
         <DesignStyles />
         <MaterialOptions />
-        <FeaturedProjects />
+        {/* <FeaturedProjects /> */}
         <WhyKitchens />
         <PriceIndication />
         <KitchenProcess />

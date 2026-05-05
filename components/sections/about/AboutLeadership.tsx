@@ -54,22 +54,41 @@ export function AboutLeadership() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-4 text-slate-600 leading-relaxed font-medium"
           >
-            <p>
-              "When I started Ambadas Kitchens 20 years ago, my goal was simple:
-              to build kitchens that don't just look good in photographs, but
-              work perfectly in a real Indian home for decades."
+            <p className="text-lg">
+              Our journey began from Hubli in the year 1999 by trading steel almirahs, driven by a passion to put a strong foothold in the furniture industry.
             </p>
             <p>
-              With over two decades of hands-on experience in woodworking and
-              interior design, I have seen the industry evolve. But my core
-              philosophy remains unchanged: Quality is non-negotiable. We
-              believe in providing honest advice, practical solutions, and
-              craftsmanship that stands the test of time.
+              We started our first Modular Kitchen Showroom in Hubli. In just a few months, we expanded to Belgaum, and within a short period, we moved our path to Bangalore, establishing ourselves in Koramangala.
             </p>
-            <p>
-              Our leadership is not about corporate boardrooms; it's about being
-              on the factory floor and at the project site, ensuring every
-              detail is exactly right.
+            
+            <div className="pt-4">
+              <h4 className="text-sm font-black uppercase tracking-widest text-primary mb-4 bg-primary/5 inline-block px-3 py-1 rounded-md">Key Milestones</h4>
+              <ul className="space-y-3 border-l-2 border-accent/40 pl-5 ml-2">
+                <li className="relative">
+                  <div className="absolute -left-[27px] top-2 w-3 h-3 rounded-full bg-accent border-2 border-slate-50" />
+                  <span className="text-slate-700">Started Berloni Showroom in Bangalore.</span>
+                </li>
+                <li className="relative">
+                  <div className="absolute -left-[27px] top-2 w-3 h-3 rounded-full bg-accent border-2 border-slate-50" />
+                  <span className="text-slate-700">Started our own manufacturing unit in Bangalore with German Machineries.</span>
+                </li>
+                <li className="relative">
+                  <div className="absolute -left-[27px] top-2 w-3 h-3 rounded-full bg-accent border-2 border-slate-50" />
+                  <span className="text-slate-700">Ventured into Turnkey projects in Gurugram, Odisha, Chennai and Other Southern States.</span>
+                </li>
+                <li className="relative">
+                  <div className="absolute -left-[27px] top-2 w-3 h-3 rounded-full bg-accent border-2 border-slate-50" />
+                  <span className="text-slate-700">Individual end-client projects spanning various verticals.</span>
+                </li>
+                <li className="relative">
+                  <div className="absolute -left-[27px] top-2 w-3 h-3 rounded-full bg-accent border-2 border-slate-50" />
+                  <span className="text-slate-700">Trusted OEM for standalone stores of Chimney manufacturers, Interior Designers, and Retail stores.</span>
+                </li>
+              </ul>
+            </div>
+
+            <p className="text-xl font-display font-bold text-primary mt-6 pt-4 border-t border-slate-200">
+              Today, Ambadas Interiors stands as a trusted vendor and partner for countless clients across India.
             </p>
           </motion.div>
         </div>

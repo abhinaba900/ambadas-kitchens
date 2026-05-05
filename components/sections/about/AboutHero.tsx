@@ -58,7 +58,7 @@ export function AboutHero() {
               variant="accent" 
               size="lg" 
               className="w-full sm:w-auto text-primary group"
-              onClick={openConsultationModal}
+              onClick={() => openConsultationModal()}
             >
               Get in Touch
               <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />

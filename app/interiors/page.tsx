@@ -5,7 +5,7 @@ import { InteriorsHero } from "@/components/sections/interiors/InteriorsHero";
 import { InteriorsOffer } from "@/components/sections/interiors/InteriorsOffer";
 import { RoomShowcase } from "@/components/sections/interiors/RoomShowcase";
 import { WhyFullHome } from "@/components/sections/interiors/WhyFullHome";
-import { FeaturedProjects } from "@/components/sections/interiors/FeaturedProjects";
+// import { FeaturedProjects } from "@/components/sections/interiors/FeaturedProjects";
 import { BudgetBlocks } from "@/components/sections/interiors/BudgetBlocks";
 import { CapabilitySection } from "@/components/sections/interiors/CapabilitySection";
 import { InteriorsProcess } from "@/components/sections/interiors/InteriorsProcess";
@@ -34,7 +34,7 @@ export default function InteriorsPage() {
         <RoomShowcase />
         <BudgetBlocks />
         <CapabilitySection />
-        <FeaturedProjects />
+        {/* <FeaturedProjects /> */}
         <InteriorsProcess />
         <InteriorsTestimonials />
         <InteriorsCTA />

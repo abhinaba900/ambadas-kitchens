@@ -2,8 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/Button";
 import { ArrowRight, Star } from "lucide-react";
 
 const projects = [
@@ -54,10 +54,10 @@ export function WardrobePortfolio() {
               Wardrobe <span className="text-accent underline decoration-accent/30 decoration-8 underline-offset-8">Masterpieces</span> <br />Across Bangalore
             </motion.h2>
           </div>
-          <Button variant="outline" className="hidden md:flex gap-3 group px-8 py-6 rounded-full hover:bg-primary hover:text-white transition-all text-lg font-bold">
+          <Link href="/portfolio?category=Wardrobes#portfolio-filters" className="hidden md:flex items-center gap-3 group px-8 py-4 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all text-lg font-bold">
             View Full Portfolio
             <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
-          </Button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -84,18 +84,14 @@ export function WardrobePortfolio() {
                     <span>{project.rating}</span>
                   </div>
                 </div>
-                <p className="text-slate-500 font-bold mb-4">{project.location}</p>
-                <div className="flex items-center gap-2 text-primary font-black uppercase text-xs tracking-widest opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-500">
-                  <span>View details</span>
-                  <ArrowRight size={14} />
-                </div>
+                <p className="text-slate-500 font-bold">{project.location}</p>
               </div>
             </motion.div>
           ))}
         </div>
         
         <div className="mt-12 text-center md:hidden">
-          <Button variant="outline" className="w-full py-6 rounded-full text-lg font-bold">View Full Portfolio</Button>
+          <Link href="/portfolio?category=Wardrobes#portfolio-filters" className="w-full flex items-center justify-center py-4 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all text-lg font-bold">View Full Portfolio</Link>
         </div>
       </div>
     </section>

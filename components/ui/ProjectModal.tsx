@@ -7,6 +7,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./Button";
 import { PortfolioProject } from "@/lib/portfolio-data";
+import { useModal } from "@/lib/ModalContext";
 
 interface ProjectModalProps {
   project: PortfolioProject | null;
@@ -15,6 +16,8 @@ interface ProjectModalProps {
 }
 
 export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
+  const { openConsultationModal } = useModal();
+
   // Prevent scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -63,6 +66,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                 src={project.thumbnail}
                 alt={project.title}
                 fill
+                loading="lazy"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
@@ -117,17 +121,24 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                   <p className="text-sm text-slate-500">
                     Get a quote for a similar modular setup customized for your space.
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <Button variant="accent" className="w-full gap-2">
+                  <div className="flex flex-col sm:flex-row gap-3 mt-2">
+                    <Button 
+                      variant="accent" 
+                      className="w-full gap-2 whitespace-nowrap"
+                      onClick={() => {
+                        onClose();
+                        setTimeout(() => openConsultationModal({ category: project.category, budget: project.budgetRange }), 100);
+                      }}
+                    >
                       Get Similar Design
                     </Button>
                     <a 
                       href="https://wa.me/919448396322" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex items-center w-full justify-center gap-2 px-2 py-2 bg-[#25D366] text-white rounded-xl font-bold hover:scale-[1.02] transition-transform shadow-lg"
+                      className="flex items-center w-full justify-center gap-2 px-6 py-3 bg-[#25D366] text-white rounded-full font-bold hover:bg-[#20bd5a] transition-colors shadow-lg whitespace-nowrap"
                     >
-                      <FaWhatsapp size={18} />
+                      <FaWhatsapp size={20} />
                       WhatsApp Now
                     </a>
                   </div>

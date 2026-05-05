@@ -26,6 +26,11 @@ const kitchenTypes = [
     image: "/kitchens/types/straight.png",
   },
   {
+    title: "Peninsula Kitchen",
+    description: "An extension of the counter providing an island-like workspace without being detached.",
+    image: "/portfolio/kitchens/kitchen-13.webp",
+  },
+  {
     title: "Island Kitchen",
     description: "The ultimate social kitchen with a detached central workspace.",
     image: "/kitchens/types/island.png",
@@ -40,8 +45,8 @@ export function KitchenTypes() {
           <h2 className="text-3xl md:text-5xl font-display font-bold text-primary mb-6">
             Types of Kitchens We Offer
           </h2>
-          <p className="text-slate-600 text-lg">
-            Choose the layout that perfectly fits your space and culinary habits. Each design is custom-sized for your specific dimensions.
+          <p className="text-slate-600 text-lg leading-relaxed">
+            We offer a wide range of modular kitchen layouts including L-shaped, U-shaped, Parallel, Straight, Peninsula, and Island designs. Each kitchen is thoughtfully planned to maximize space, functionality, and long-term durability. Our expert designers work closely with you to create a layout tailored to your lifestyle through a structured and interactive process.
           </p>
         </div>
 
@@ -63,7 +68,9 @@ export function KitchenTypes() {
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                  <span className="text-white font-medium">Explore Design →</span>
+                  <span className="text-white font-medium">
+                    Explore Design →
+                  </span>
                 </div>
               </div>
               <div className="p-6">
@@ -76,7 +83,7 @@ export function KitchenTypes() {
               </div>
             </motion.div>
           ))}
-          
+
           {/* Custom Quote Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -86,7 +93,10 @@ export function KitchenTypes() {
             className="flex flex-col justify-center items-center p-8 bg-primary rounded-2xl text-center text-white"
           >
             <h3 className="text-2xl font-bold mb-4">Custom Layout Needed?</h3>
-            <p className="text-slate-300 mb-6">Our experts can design a unique layout tailored to your specific space constraints.</p>
+            <p className="text-slate-300 mb-6">
+              Our experts can design a unique layout tailored to your specific
+              space constraints.
+            </p>
             <button className="px-6 py-3 bg-accent text-primary font-bold rounded-full hover:bg-white transition-colors">
               Get Expert Advice
             </button>

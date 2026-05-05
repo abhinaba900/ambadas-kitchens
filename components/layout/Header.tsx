@@ -94,7 +94,7 @@ export function Header() {
             variant="accent" 
             size="sm" 
             className="hidden lg:flex"
-            onClick={openConsultationModal}
+            onClick={() => openConsultationModal()}
           >
             Get Free Quote
           </Button>

@@ -53,35 +53,33 @@ export function Footer() {
           </ul>
         </div>
 
-        {/* Contact & Map */}
-        <div className="flex flex-col gap-8">
+        {/* Contact Details */}
+        <div className="flex flex-col gap-6">
           <div>
-            <h4 className="font-display font-bold text-lg mb-6">Contact Us</h4>
-            <ul className="flex flex-col gap-4 text-slate-300 text-sm">
-              <li className="flex gap-3">
-                <MapPin size={18} className="text-accent shrink-0" />
-                <span>JP Nagar, Bangalore, Karnataka</span>
-              </li>
-              <li className="flex gap-3 items-center">
-                <Phone size={18} className="text-accent shrink-0" />
-                <span>94483 96322</span>
-              </li>
-              <li className="flex gap-3 items-center">
-                <Mail size={18} className="text-accent shrink-0" />
-                <span>hello@ambadas.in</span>
-              </li>
-            </ul>
+            <h4 className="font-display font-bold text-base mb-3 text-white">Experience Centre & Head Office</h4>
+            <div className="flex gap-3 text-slate-300 text-sm leading-relaxed">
+              <MapPin size={18} className="text-accent shrink-0 mt-1" />
+              <p>Ambadas Interiors<br/># 3, 3rd Floor, Near Sony World Signal,<br/>Koramangala, Bengaluru 560 034</p>
+            </div>
           </div>
-          <div className="aspect-video w-full bg-slate-800 rounded-lg overflow-hidden border border-white/10 relative">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m12!1m3!1d3889.26189!2d77.58!3d12.91!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15!2sJP%20Nagar%2C%20Bengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+          
+          <div>
+            <h4 className="font-display font-bold text-base mb-3 text-white">Manufacturing Unit 1 & Exp. Centre</h4>
+            <div className="flex gap-3 text-slate-300 text-sm leading-relaxed">
+              <MapPin size={18} className="text-accent shrink-0 mt-1" />
+              <p>Ambadas Kitchens<br/>Sy No 156, Godown No 30<br/>Dommasandra Village, Main Road,<br/>Bengaluru Urban- 562 125</p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 pt-4 border-t border-white/10 text-sm text-slate-300">
+            <div className="flex gap-3 items-center">
+              <Phone size={16} className="text-accent shrink-0" />
+              <span>94483 96322</span>
+            </div>
+            <div className="flex gap-3 items-center">
+              <Mail size={16} className="text-accent shrink-0" />
+              <span>hello@ambadas.in</span>
+            </div>
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ export function KitchensCTA() {
                 variant="outline" 
                 size="lg" 
                 className="h-16 px-10 border-white text-white hover:bg-white hover:text-primary transition-all"
-                onClick={openConsultationModal}
+                onClick={() => openConsultationModal()}
               >
                 Book Consultation
                 <ArrowRight className="ml-2 w-5 h-5" />

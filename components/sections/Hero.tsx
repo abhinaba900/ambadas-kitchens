@@ -42,9 +42,9 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+            className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium"
           >
-            Factory-built precision. Delivered with perfection. Transform your home with Bangalore's leading modular kitchen specialists.
+            Delivering manufactured Kitchens to clients since 2003
           </motion.p>
           
           <motion.div 
@@ -57,7 +57,7 @@ export function Hero() {
               variant="accent" 
               size="lg" 
               className="w-full sm:w-auto text-primary group"
-              onClick={openConsultationModal}
+              onClick={() => openConsultationModal()}
             >
               Get Free Design Consultation
               <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -81,7 +81,7 @@ export function Hero() {
                 <Award size={20} />
               </div>
               <div className="text-left">
-                <p className="text-sm font-bold text-primary">20+ Years</p>
+                <p className="text-sm font-bold text-primary">23+ Years</p>
                 <p className="text-xs text-slate-500">Experience</p>
               </div>
             </div>
@@ -92,6 +92,15 @@ export function Hero() {
               <div className="text-left">
                 <p className="text-sm font-bold text-primary">1000+ Kitchens</p>
                 <p className="text-xs text-slate-500">Delivered</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent">
+                <MapPin size={20} />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-bold text-primary">Factory Manufactured</p>
+                <p className="text-xs text-slate-500">In-house Production</p>
               </div>
             </div>
           </motion.div>

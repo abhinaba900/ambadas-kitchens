@@ -41,7 +41,7 @@ export function WardrobeCTA() {
               variant="accent" 
               size="lg" 
               className="w-full sm:w-auto h-auto py-5 px-10 text-primary uppercase tracking-widest text-sm"
-              onClick={openConsultationModal}
+              onClick={() => openConsultationModal()}
             >
               Book Free Consultation
               <ArrowRight size={18} className="ml-2" />

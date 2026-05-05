@@ -35,7 +35,7 @@ export function FinalCTA() {
               variant="accent" 
               size="lg" 
               className="px-10 py-7 font-bold text-primary shadow-xl"
-              onClick={openConsultationModal}
+              onClick={() => openConsultationModal()}
             >
               FREE DESIGN CONSULTATION
               <ArrowRight size={20} className="ml-2" />

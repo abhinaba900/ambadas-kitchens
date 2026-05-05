@@ -8,9 +8,18 @@ import { Button } from "./Button";
 import { cn } from "@/lib/utils";
 
 export function ConsultationModal() {
-  const { isConsultationModalOpen, closeConsultationModal } = useModal();
+  const { isConsultationModalOpen, closeConsultationModal, consultationData } = useModal();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [propertyType, setPropertyType] = useState("Modular Kitchen");
+
+  useEffect(() => {
+    if (isConsultationModalOpen && consultationData?.category) {
+      if (consultationData.category === "Kitchens") setPropertyType("Modular Kitchen");
+      else if (consultationData.category === "Wardrobes") setPropertyType("Wardrobes & Storage");
+      else if (consultationData.category === "Full Home Interiors") setPropertyType("Full Home Interior");
+    }
+  }, [isConsultationModalOpen, consultationData]);
 
   // Prevent scroll when modal is open
   useEffect(() => {
@@ -21,21 +30,28 @@ export function ConsultationModal() {
     }
   }, [isConsultationModalOpen]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const [iframeLoadedCount, setIframeLoadedCount] = useState(0);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    // DO NOT e.preventDefault() here.
+    // We want the browser to natively POST the form to the hidden iframe.
     setIsSubmitting(true);
+  };
+
+  const handleIframeLoad = () => {
+    // The iframe loads once initially (empty), and then again after form submission
+    setIframeLoadedCount(prev => prev + 1);
     
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    // Reset and close after a delay
-    setTimeout(() => {
-      setIsSubmitted(false);
-      closeConsultationModal();
-    }, 3000);
+    if (isSubmitting) {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      
+      // Reset and close after a delay
+      setTimeout(() => {
+        setIsSubmitted(false);
+        closeConsultationModal();
+      }, 3000);
+    }
   };
 
   return (
@@ -131,7 +147,26 @@ export function ConsultationModal() {
                     </p>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-5">
+                  <iframe 
+                    name="hidden_iframe" 
+                    id="hidden_iframe" 
+                    style={{ display: 'none' }} 
+                    onLoad={handleIframeLoad}
+                  ></iframe>
+
+                  <form 
+                    action="https://forms.zohopublic.in/ambadaskitchens1/form/WebsiteEnquiry/formperma/7WR-IxLnQqiq82GpXQ5lkHIuhXmSjcMv75ie-tmmBKg/htmlRecords/submit"
+                    method="POST"
+                    acceptCharset="UTF-8"
+                    encType="multipart/form-data"
+                    target="hidden_iframe"
+                    onSubmit={handleSubmit} 
+                    className="space-y-5"
+                  >
+                    <input type="hidden" name="zf_referrer_name" value="" />
+                    <input type="hidden" name="zf_redirect_url" value="" />
+                    <input type="hidden" name="zc_gad" value="" />
+
                     <div className="space-y-4">
                       {/* Name */}
                       <div className="space-y-2">
@@ -141,6 +176,7 @@ export function ConsultationModal() {
                           <input 
                             required
                             type="text" 
+                            name="SingleLine1"
                             placeholder="e.g. John Doe"
                             className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all"
                           />
@@ -156,6 +192,7 @@ export function ConsultationModal() {
                             <input 
                               required
                               type="tel" 
+                              name="PhoneNumber_countrycode"
                               placeholder="+91 94483 96322"
                               className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all"
                             />
@@ -169,6 +206,7 @@ export function ConsultationModal() {
                             <input 
                               required
                               type="email" 
+                              name="Email"
                               placeholder="john@example.com"
                               className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all"
                             />
@@ -181,14 +219,34 @@ export function ConsultationModal() {
                         <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Property Type</label>
                         <div className="relative">
                           <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                          <select className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all appearance-none">
-                            <option>Modular Kitchen</option>
-                            <option>Wardrobes & Storage</option>
-                            <option>Full Home Interior</option>
-                            <option>Commercial Spaces</option>
+                          <select 
+                            name="SingleLine"
+                            value={propertyType}
+                            onChange={(e) => setPropertyType(e.target.value)}
+                            className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all appearance-none"
+                          >
+                            <option value="Modular Kitchen">Modular Kitchen</option>
+                            <option value="Wardrobes & Storage">Wardrobes & Storage</option>
+                            <option value="Full Home Interior">Full Home Interior</option>
+                            <option value="Commercial Spaces">Commercial Spaces</option>
                           </select>
                         </div>
                       </div>
+
+                      {/* Budget Readonly if passed */}
+                      {consultationData?.budget && (
+                         <div className="space-y-2">
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Selected Budget</label>
+                          <div className="relative">
+                            <input 
+                              disabled
+                              type="text" 
+                              value={consultationData.budget}
+                              className="w-full px-4 py-3.5 bg-slate-100 border border-slate-200 rounded-xl text-slate-500 font-medium cursor-not-allowed"
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <Button 

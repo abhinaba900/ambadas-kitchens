@@ -28,17 +28,46 @@ export function LocationMap() {
                 Experience our quality and design firsthand. Our experience center is located in the heart of Bangalore's design district.
               </p>
               
-              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-4">
-                <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center flex-shrink-0 text-primary">
-                  <MapPin size={24} />
+              <div className="space-y-4">
+                <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-4 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center flex-shrink-0 text-primary">
+                    <MapPin size={20} />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="font-bold text-primary text-sm">Experience Centre and Head Office</p>
+                    <p className="text-slate-600 text-sm">
+                      Ambadas Interiors<br />
+                      # 3, 3rd Floor, Near Sony World Signal,<br />
+                      Koramangala, Bengaluru 560 034
+                    </p>
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <p className="font-bold text-primary">Showroom Address</p>
-                  <p className="text-slate-600">
-                    #123, 2nd Floor, Main Road,<br />
-                    Indiranagar, Bangalore,<br />
-                    Karnataka - 560038
-                  </p>
+
+                <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-4 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center flex-shrink-0 text-primary">
+                    <MapPin size={20} />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="font-bold text-primary text-sm">Manufacturing Unit 1 & Exp. Centre</p>
+                    <p className="text-slate-600 text-sm">
+                      Ambadas Kitchens<br />
+                      Sy No 156, Godown No 30<br />
+                      Dommasandra Village, Main Road,<br />
+                      Bengaluru Urban- 562 125
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-5 bg-primary/5 rounded-2xl border border-primary/10 flex items-start gap-4">
+                  <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center flex-shrink-0 text-primary">
+                    <Navigation size={20} />
+                  </div>
+                  <div className="space-y-1 mt-1">
+                    <p className="font-bold text-primary text-sm">Our Service Locations</p>
+                    <p className="text-primary/80 font-semibold text-sm">
+                      Bengaluru | Hubli | Delhi | Chennai | Mangalore
+                    </p>
+                  </div>
                 </div>
               </div>
 

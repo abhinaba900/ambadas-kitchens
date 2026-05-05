@@ -7,27 +7,27 @@ import { ChevronRight } from "lucide-react";
 
 const types = [
   {
-    title: "Sliding Door Wardrobes",
-    benefit: "Space-saving & modern look",
-    image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=1200&q=80",
+    title: "Hinged Type Wardrobes",
+    benefit: "Classic appeal & full access",
+    image: "/portfolio/wardrobes/wardrobe-01.webp",
     delay: 0.1,
   },
   {
-    title: "Hinged Wardrobes",
-    benefit: "Classic appeal & full access",
-    image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+    title: "Sliding Type Wardrobes",
+    benefit: "Space-saving & modern look",
+    image: "/portfolio/wardrobes/wardrobe-03.webp",
     delay: 0.2,
   },
   {
-    title: "Walk-in Wardrobes",
-    benefit: "Ultimate luxury & organization",
-    image: "https://images.unsplash.com/photo-1614631446501-abcf76949eca?auto=format&fit=crop&w=1200&q=80",
+    title: "Floor to Ceiling Type",
+    benefit: "Maximum vertical storage",
+    image: "/portfolio/wardrobes/wardrobe-13.webp",
     delay: 0.3,
   },
   {
-    title: "Loft Storage Units",
-    benefit: "Utilization of vertical space",
-    image: "https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&w=1200&q=80",
+    title: "L-Type & Customized",
+    benefit: "Perfect for corner spaces",
+    image: "/portfolio/wardrobes/wardrobe-19.webp",
     delay: 0.4,
   },
 ];
@@ -51,8 +51,8 @@ export function WardrobeTypes() {
           >
             Choose Your <span className="text-accent underline decoration-accent/30 decoration-8 underline-offset-8">Ideal Wardrobe</span>
           </motion.h2>
-          <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
-            From compact spaces to expansive dressing rooms, we have the perfect fit for every layout.
+          <p className="text-slate-500 max-w-3xl mx-auto text-lg leading-relaxed mt-6">
+            We offer various types of wardrobes like <strong className="text-primary">Hinged type, Sliding type, Floor to Ceiling type, L Type</strong> and in many customized manners. From compact spaces to expansive dressing rooms, we have the perfect fit for every layout.
           </p>
         </div>
 

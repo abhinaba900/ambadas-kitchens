@@ -2,18 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-
-// Using the same placeholder images or generated ones for variety
-const projects = [
-  { id: 1, title: "Modern Villa Kitchen", type: "Island Kitchen", image: "/hero-kitchen.png" },
-  { id: 2, title: "Contemporary Apartment", type: "L-Shaped Kitchen", image: "/kitchens/types/l-shaped.png" },
-  { id: 3, title: "Minimalist Loft", type: "Parallel Kitchen", image: "/kitchens/types/parallel.png" },
-  { id: 4, title: "Classic Family Home", type: "U-Shaped Kitchen", image: "/kitchens/types/u-shaped.png" },
-  { id: 5, title: "Small Studio", type: "Straight Kitchen", image: "/kitchens/types/straight.png" },
-  { id: 6, title: "Luxury Penthouse", type: "Island Kitchen", image: "/kitchens/types/island.png" },
-];
+import { allKitchenContent } from "./DesignStyles";
 
 export function FeaturedProjects() {
   return (
@@ -28,16 +20,16 @@ export function FeaturedProjects() {
               Check out some of our real-world modular kitchen installations across Bangalore. Quality you can see.
             </p>
           </div>
-          <button className="px-8 py-3 bg-primary text-white font-bold rounded-full hover:bg-slate-800 transition-colors flex items-center gap-2">
+          <Link href="/portfolio#portfolio-gallery" className="px-8 py-3 bg-primary text-white font-bold rounded-full hover:bg-slate-800 transition-colors flex items-center gap-2 shrink-0">
             View Full Portfolio
             <ExternalLink size={20} />
-          </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
+          {allKitchenContent.slice(0, 6).map((project, index) => (
             <motion.div
-              key={project.id}
+              key={project.image}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -51,7 +43,7 @@ export function FeaturedProjects() {
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6">
-                <p className="text-accent text-sm font-bold uppercase tracking-widest mb-1">{project.type}</p>
+                <p className="text-accent text-sm font-bold uppercase tracking-widest mb-1">{project.style} Series</p>
                 <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
               </div>
             </motion.div>

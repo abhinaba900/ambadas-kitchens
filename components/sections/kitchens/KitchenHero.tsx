@@ -59,7 +59,7 @@ export function KitchenHero() {
               variant="accent" 
               size="lg" 
               className="text-primary font-bold group"
-              onClick={openConsultationModal}
+              onClick={() => openConsultationModal()}
             >
               Get Free Consultation
               <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />

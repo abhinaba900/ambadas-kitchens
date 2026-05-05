@@ -62,7 +62,7 @@ export function WardrobeHero() {
               variant="accent" 
               size="lg" 
               className="text-primary font-bold group text-lg px-12"
-              onClick={openConsultationModal}
+              onClick={() => openConsultationModal()}
             >
               Get Free Consultation
               <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />

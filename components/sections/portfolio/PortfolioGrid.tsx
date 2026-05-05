@@ -1,27 +1,60 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { PortfolioProject, portfolioProjects } from "@/lib/portfolio-data";
+import { PortfolioProject } from "@/lib/portfolio-data";
+import { portfolioProjects } from "@/lib/portfolio-merged";
 import { MapPin, ArrowUpRight, Plus, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProjectModal } from "@/components/ui/ProjectModal";
 
 interface PortfolioGridProps {
   activeCategory: string;
+  activeBudget?: string;
+  activeLocation?: string;
 }
 
-export function PortfolioGrid({ activeCategory }: PortfolioGridProps) {
+export function PortfolioGrid({ activeCategory, activeBudget = "All", activeLocation = "All" }: PortfolioGridProps) {
   const [selectedProject, setSelectedProject] = useState<PortfolioProject | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(12);
 
-  const filteredProjects = activeCategory === "All" 
-    ? portfolioProjects 
-    : portfolioProjects.filter(p => p.category === activeCategory);
+  // Reset pagination when filters change
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [activeCategory, activeBudget, activeLocation]);
+
+  let filteredProjects = portfolioProjects.filter(p => {
+    // 1. Category Filter
+    if (activeCategory !== "All" && p.category !== activeCategory) return false;
+    
+    // 2. Budget Filter (simple loose matching)
+    if (activeBudget !== "All") {
+      if (!p.budgetRange) return false;
+      // Very basic budget matching based on text
+      if (activeBudget === "Under ₹5L" && !p.budgetRange.includes("₹1L") && !p.budgetRange.includes("₹2L") && !p.budgetRange.includes("₹3L") && !p.budgetRange.includes("₹4L") && !p.budgetRange.includes("₹4.5L")) return false;
+      if (activeBudget === "₹5L - ₹10L" && !p.budgetRange.includes("₹5L") && !p.budgetRange.includes("₹6L") && !p.budgetRange.includes("₹8L")) return false;
+      if (activeBudget === "Above ₹10L" && !p.budgetRange.includes("₹15L") && !p.budgetRange.includes("₹25L")) return false;
+    }
+
+    // 3. Location Filter
+    if (activeLocation !== "All") {
+      if (!p.location) return false;
+      if (!p.location.toLowerCase().includes(activeLocation.toLowerCase())) return false;
+    }
+
+    return true;
+  });
+
+  const visibleProjects = filteredProjects.slice(0, visibleCount);
 
   const openModal = (project: PortfolioProject) => {
     setSelectedProject(project);
     setIsModalOpen(true);
+  };
+
+  const handleLoadMore = () => {
+    setVisibleCount(prev => prev + 12);
   };
 
   return (
@@ -29,7 +62,7 @@ export function PortfolioGrid({ activeCategory }: PortfolioGridProps) {
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
+            {visibleProjects.map((project, index) => (
               <motion.div
                 key={project.id}
                 layout
@@ -37,7 +70,7 @@ export function PortfolioGrid({ activeCategory }: PortfolioGridProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="group relative h-[450px] md:h-[500px] flex flex-col justify-end bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-700"
+                className="group relative h-[450px] md:h-[500px] flex flex-col justify-end bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-700 cursor-pointer"
                 onClick={() => openModal(project)}
               >
                 {/* Image Background */}
@@ -45,6 +78,8 @@ export function PortfolioGrid({ activeCategory }: PortfolioGridProps) {
                   src={project.thumbnail}
                   alt={project.title}
                   fill
+                  loading={index < 3 ? "eager" : "lazy"} // Priority only for top images
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
                 
@@ -80,13 +115,6 @@ export function PortfolioGrid({ activeCategory }: PortfolioGridProps) {
                     <ArrowUpRight size={18} className="transform transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
                   </button>
                 </div>
-
-                {/* Floating "Seen something you like?" badge */}
-                <div className="absolute top-8 left-8 right-8 z-10 hidden group-hover:block animate-in fade-in slide-in-from-top-4 duration-500">
-                  <div className="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl text-white text-xs font-medium text-center">
-                    Seen something you like? We can customize it for your space.
-                  </div>
-                </div>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -94,7 +122,18 @@ export function PortfolioGrid({ activeCategory }: PortfolioGridProps) {
 
         {filteredProjects.length === 0 && (
           <div className="py-20 text-center">
-            <p className="text-xl text-slate-500 font-display">No projects found in this category yet.</p>
+            <p className="text-xl text-slate-500 font-display">No projects found for the selected filters.</p>
+          </div>
+        )}
+
+        {visibleCount < filteredProjects.length && (
+          <div className="mt-16 flex justify-center">
+            <button 
+              onClick={handleLoadMore}
+              className="px-8 py-4 bg-white border-2 border-primary/10 hover:border-primary/30 text-primary font-bold rounded-full shadow-sm hover:shadow-md transition-all flex items-center gap-2"
+            >
+              Load More Projects
+            </button>
           </div>
         )}
       </div>

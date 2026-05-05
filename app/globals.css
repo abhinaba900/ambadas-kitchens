@@ -5,14 +5,14 @@
   --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   
   /* Base Colors (Fallbacks for background-color, and used for text/borders) */
-  --color-primary: #0F3D2E;
-  --color-primary-light: #1A5C48;
+  --color-primary: #203C76;
+  --color-primary-light: #2c56ad;
   --color-accent: #F4C430;
   --color-accent-dark: #D9AD26;
   
   /* Background Gradients (Mapped to the same keys so bg-primary/bg-accent use them) */
-  --background-image-primary: linear-gradient(135deg, #0F3D2E, #1F6F5B);
-  --background-image-primary-light: linear-gradient(135deg, #1A5C48, #2E8B72);
+  --background-image-primary: linear-gradient(135deg, #203C76, #2c56ad);
+  --background-image-primary-light: linear-gradient(135deg, #2c56ad, #3f70d6);
   --background-image-accent: linear-gradient(135deg, #F4C430, #FFE27A);
   --background-image-accent-dark: linear-gradient(135deg, #D9AD26, #F4D03F);
   
