@@ -1,134 +1,242 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { ChevronRight, Award, MapPin, CheckCircle2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useModal } from "@/lib/ModalContext";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+const showcaseImages = [
+  "/portfolio/kitchens/kitchen-01.webp",
+  "/portfolio/kitchens/kitchen-05.webp",
+  "/portfolio/kitchens/kitchen-08.webp",
+  "/portfolio/kitchens/kitchen-12.webp",
+  "/portfolio/kitchens/kitchen-16.webp",
+];
 
 export function Hero() {
   const { openConsultationModal } = useModal();
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % showcaseImages.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <section id="hero" className="relative min-h-[90vh] flex items-center pt-24 pb-24 md:pb-32 overflow-hidden">
-      {/* Background Splashes */}
+    <section
+      id="hero"
+      className="relative min-h-[95vh] flex items-center pt-24 pb-24 md:pb-32 overflow-hidden bg-slate-50/50"
+    >
+      {/* Blurred Background Interior */}
+      <div className="absolute inset-0 z-[-2] overflow-hidden">
+        <Image
+          src="/portfolio/kitchens/kitchen-03.webp"
+          alt="Background"
+          fill
+          className="object-cover opacity-10 blur-xl scale-110"
+          priority
+        />
+      </div>
+
+      {/* Background Decorative Element */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 -skew-x-12 translate-x-1/4 -z-10" />
-      
+
       <div className="container mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
         {/* Left Content */}
-        <div className="flex-1 text-center lg:text-left space-y-8 z-10">
-          <motion.div 
+        <div className="flex-1 text-center lg:text-left space-y-10 z-10">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold tracking-wide"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-bold uppercase tracking-widest border border-primary/5"
           >
-            <MapPin size={16} /> Based in Bangalore
+            <MapPin size={16} className="text-accent" /> Based in Bangalore
           </motion.div>
-          
-          <motion.h1 
+
+          <div className="space-y-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] text-primary"
+            >
+              Custom Modular <br />
+              <span className="text-accent drop-shadow-sm">Kitchens</span>
+            </motion.h1>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative inline-block"
+            >
+              <span className="text-2xl md:text-4xl font-display font-bold text-slate-400/80 italic">
+                Designed for Your Space
+              </span>
+              <div className="absolute -bottom-2 left-0 w-full h-1 bg-accent/30 rounded-full" />
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+              delay: 0.4,
+            }}
+            whileHover={{ scale: 1.05 }}
+            className="inline-block"
+          >
+            <p className="text-xl md:text-2xl text-primary font-black uppercase tracking-tighter bg-white/80 backdrop-blur-sm px-6 py-3 rounded-2xl border border-primary/5 shadow-sm">
+              Delivering manufactured Kitchens{" "}
+              <br className="hidden md:block" /> to clients since 2003
+            </p>
+          </motion.div>
+
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] text-primary"
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5 pt-4"
           >
-            Custom Modular Kitchens <br />
-            <span className="text-accent">Designed for Your Space</span>
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium"
-          >
-            Delivering manufactured Kitchens to clients since 2003
-          </motion.p>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
-          >
-            <Button 
-              variant="accent" 
-              size="lg" 
-              className="w-full sm:w-auto text-primary group"
+            <Button
+              variant="accent"
+              size="lg"
+              className="w-full sm:w-auto text-primary group h-16 px-10 text-lg font-bold shadow-xl shadow-accent/20"
               onClick={() => openConsultationModal()}
             >
-              Get Free Design Consultation
+              Get Free Consultation
               <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Link href="/portfolio" className="w-full sm:w-auto">
-              <Button variant="outline" size="lg" className="w-full">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full h-16 px-10 text-lg font-bold hover:bg-primary hover:text-white transition-all duration-300"
+              >
                 View Our Projects
               </Button>
             </Link>
           </motion.div>
-          
+
           {/* Trust Badges */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="pt-8 flex flex-wrap justify-center lg:justify-start gap-8"
+            transition={{ duration: 1, delay: 0.8 }}
+            className="pt-10 flex flex-wrap justify-center lg:justify-start gap-10"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
-                <Award size={20} />
+            {[
+              {
+                icon: Award,
+                label: "23+ Years",
+                sub: "Experience",
+                color: "accent",
+              },
+              {
+                icon: CheckCircle2,
+                label: "1000+ Kitchens",
+                sub: "Delivered",
+                color: "primary",
+              },
+              {
+                icon: Factory,
+                label: "Factory Built",
+                sub: "In-house Production",
+                color: "accent",
+              },
+            ].map((badge, i) => (
+              <div key={i} className="flex items-center gap-4 group">
+                <div
+                  className={cn(
+                    "w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:rotate-12",
+                    badge.color === "accent"
+                      ? "bg-accent/10 text-accent"
+                      : "bg-primary/10 text-primary",
+                  )}
+                >
+                  <badge.icon size={24} />
+                </div>
+                <div className="text-left">
+                  <p className="text-base font-black text-primary leading-none mb-1">
+                    {badge.label}
+                  </p>
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    {badge.sub}
+                  </p>
+                </div>
               </div>
-              <div className="text-left">
-                <p className="text-sm font-bold text-primary">23+ Years</p>
-                <p className="text-xs text-slate-500">Experience</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <CheckCircle2 size={20} />
-              </div>
-              <div className="text-left">
-                <p className="text-sm font-bold text-primary">1000+ Kitchens</p>
-                <p className="text-xs text-slate-500">Delivered</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                <MapPin size={20} />
-              </div>
-              <div className="text-left">
-                <p className="text-sm font-bold text-primary">Factory Manufactured</p>
-                <p className="text-xs text-slate-500">In-house Production</p>
-              </div>
-            </div>
+            ))}
           </motion.div>
         </div>
-        
-        {/* Right Visual */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95, x: 20 }}
+
+        {/* Right Visual - Image Slideshow */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, x: 50 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex-1 relative w-full aspect-square md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl skew-y-1 lg:-skew-y-2 border-8 border-white"
+          transition={{ duration: 1 }}
+          className="flex-1 relative w-full aspect-square md:aspect-[4/3] rounded-[48px] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] border-[12px] border-white group"
         >
-          <Image
-            src="/hero-kitchen.png"
-            alt="Ambadas Premium Modular Kitchen"
-            fill
-            className="object-cover"
-            priority
-          />
-          {/* Floating Element */}
-          <div className="absolute bottom-6 left-6 right-6 p-4 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl flex items-center justify-between border border-white/50">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white">
-                <Award size={24} />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentImage}
+              initial={{ opacity: 0, filter: "blur(20px)", scale: 1.1 }}
+              animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+              exit={{ opacity: 0, filter: "blur(20px)", scale: 0.95 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={showcaseImages[currentImage]}
+                alt="Ambadas Premium Modular Kitchen"
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Award Floating Element */}
+          <div className="absolute bottom-8 left-8 right-8 p-6 bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl flex items-center justify-between border border-white/50 transform group-hover:translate-y-[-10px] transition-transform duration-500">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                <Award size={28} />
               </div>
               <div>
-                <p className="font-bold text-primary text-sm">Best Modular Design</p>
-                <p className="text-xs text-slate-500">Bangalore Architecture Awards</p>
+                <p className="font-black text-primary text-base uppercase tracking-tighter">
+                  Best Modular Design
+                </p>
+                <p className="text-xs font-bold text-slate-500">
+                  Bangalore Architecture Awards 2024
+                </p>
+              </div>
+            </div>
+            <div className="hidden sm:block">
+              <div className="flex -space-x-3">
+                {[1, 2, 3].map((n) => (
+                  <div
+                    key={n}
+                    className="w-8 h-8 rounded-full border-2 border-white bg-slate-200 overflow-hidden"
+                  >
+                    <img
+                      src={`https://i.pravatar.cc/100?u=${n}`}
+                      alt="user"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+                <div className="w-8 h-8 rounded-full border-2 border-white bg-accent flex items-center justify-center text-[10px] font-bold text-primary">
+                  +50
+                </div>
               </div>
             </div>
           </div>
@@ -136,4 +244,26 @@ export function Hero() {
       </div>
     </section>
   );
+}
+
+function Factory(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+      <path d="M17 18h1" />
+      <path d="M12 18h1" />
+      <path d="M7 18h1" />
+    </svg>
+  )
 }

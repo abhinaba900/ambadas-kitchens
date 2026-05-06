@@ -1,74 +1,96 @@
 "use client";
 
 import React from "react";
-import { Search, PenTool, Factory, Hammer } from "lucide-react";
+import { Users, Factory, Hammer, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export function Process() {
-  const steps = [
+  const phases = [
     {
-      icon: <Search size={24} />,
-      title: "Consultation",
-      description: "We discuss your needs and measure your space meticulously.",
+      icon: <Users size={32} />,
+      title: "Working Phase",
+      description: "From the first meeting to final design approval and décor selection.",
+      steps: "7 Steps",
+      color: "blue"
     },
     {
-      icon: <PenTool size={24} />,
-      title: "Design",
-      description: "Custom 3D designs tailored to your style and functionality.",
+      icon: <Factory size={32} />,
+      title: "Production Phase",
+      description: "Precision manufacturing in our state-of-the-art facility using European tech.",
+      steps: "7 Steps",
+      color: "green"
     },
     {
-      icon: <Factory size={24} />,
-      title: "Factory Production",
-      description: "Precision manufacturing of your modular components in our facility.",
-    },
-    {
-      icon: <Hammer size={24} />,
-      title: "Installation",
-      description: "Professional assembly and seamless fitting at your site.",
+      icon: <Hammer size={32} />,
+      title: "Installation Phase",
+      description: "Expert on-site assembly, quality checks, and seamless final handover.",
+      steps: "7 Steps",
+      color: "amber"
     },
   ];
 
   return (
-    <section id="process" className="section-padding bg-white relative">
-      <div className="container mx-auto">
+    <section id="process" className="section-padding bg-slate-50 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
           <h2 className="text-3xl md:text-5xl font-display font-bold text-primary mb-6">
-            The <span className="text-primary/70">Ambadas Journey</span>
+            The <span className="text-accent">Ambadas</span> Journey
           </h2>
-          <p className="text-slate-600">
+          <p className="text-slate-600 text-lg">
             Our streamlined process ensures a stress-free experience from the first meeting to the final handover.
           </p>
         </div>
 
-        <div className="relative">
-          {/* Connecting Line (Desktop) */}
-          <div className="hidden lg:block absolute top-[45px] left-0 right-0 h-[2px] bg-slate-100 z-0" />
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 relative z-10">
-            {steps.map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="flex flex-col items-center text-center group"
-              >
-                <div className="w-[90px] h-[90px] rounded-full bg-white border-2 border-slate-100 flex items-center justify-center text-primary shadow-sm group-hover:border-accent group-hover:shadow-[0_0_20px_rgba(244,196,48,0.2)] transition-all duration-500 mb-8 relative">
-                  <span className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-primary text-white font-bold text-[10px] flex items-center justify-center border-2 border-white">
-                    0{index + 1}
-                  </span>
-                  {step.icon}
-                </div>
-                <h3 className="text-xl font-display font-bold text-primary mb-4">{step.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed max-w-[240px]">
-                  {step.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          {phases.map((phase, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-500 group flex flex-col items-center text-center"
+            >
+              <div className={cn(
+                "w-20 h-20 rounded-2xl flex items-center justify-center mb-8 transition-transform group-hover:scale-110 group-hover:rotate-3",
+                index === 0 ? "bg-blue-50 text-blue-600" :
+                index === 1 ? "bg-green-50 text-green-600" :
+                "bg-amber-50 text-amber-600"
+              )}>
+                {phase.icon}
+              </div>
+              
+              <div className="mb-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-2 block">Phase 0{index + 1}</span>
+                <h3 className="text-2xl font-display font-bold text-primary">{phase.title}</h3>
+              </div>
+              
+              <p className="text-slate-500 mb-8 leading-relaxed">
+                {phase.description}
+              </p>
+              
+              <div className="mt-auto pt-6 border-t border-slate-50 w-full flex items-center justify-between">
+                <span className="text-sm font-bold text-slate-400">{phase.steps}</span>
+                <Link 
+                  href="/our-process" 
+                  className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:text-accent transition-colors"
+                >
+                  View Chronology <ArrowRight size={16} />
+                </Link>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
   );
+}
+
+// Helper function for conditional classes if not imported
+function cn(...classes: any[]) {
+  return classes.filter(Boolean).join(' ');
 }

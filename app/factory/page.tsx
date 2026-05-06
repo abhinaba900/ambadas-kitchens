@@ -13,6 +13,7 @@ import { FactoryVideo } from "@/components/sections/factory/FactoryVideo";
 import { FactoryMidCTA } from "@/components/sections/factory/FactoryMidCTA";
 import { FactoryLinkProcess } from "@/components/sections/factory/FactoryLinkProcess";
 import { FactoryFinalCTA } from "@/components/sections/factory/FactoryFinalCTA";
+import { Partners } from "@/components/sections/Partners";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { StickyMobileBar } from "@/components/ui/StickyMobileBar";
 import { Metadata } from "next";
@@ -31,6 +32,7 @@ export default function FactoryPage() {
         <FactoryHero />
         <FactoryWhy />
         <FactoryMachinery />
+        <Partners />
         <FactoryProcess />
         <FactoryGallery />
         <FactoryQC />

@@ -2,22 +2,35 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, CheckCircle2, Phone, Mail, User, MapPin, Send, Loader2 } from "lucide-react";
+import {
+  X,
+  CheckCircle2,
+  Phone,
+  Mail,
+  User,
+  MapPin,
+  Send,
+  Loader2,
+} from "lucide-react";
 import { useModal } from "@/lib/ModalContext";
 import { Button } from "./Button";
 import { cn } from "@/lib/utils";
 
 export function ConsultationModal() {
-  const { isConsultationModalOpen, closeConsultationModal, consultationData } = useModal();
+  const { isConsultationModalOpen, closeConsultationModal, consultationData } =
+    useModal();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [propertyType, setPropertyType] = useState("Modular Kitchen");
 
   useEffect(() => {
     if (isConsultationModalOpen && consultationData?.category) {
-      if (consultationData.category === "Kitchens") setPropertyType("Modular Kitchen");
-      else if (consultationData.category === "Wardrobes") setPropertyType("Wardrobes & Storage");
-      else if (consultationData.category === "Full Home Interiors") setPropertyType("Full Home Interior");
+      if (consultationData.category === "Kitchens")
+        setPropertyType("Modular Kitchen");
+      else if (consultationData.category === "Wardrobes")
+        setPropertyType("Wardrobes & Storage");
+      else if (consultationData.category === "Full Home Interiors")
+        setPropertyType("Full Home Interior");
     }
   }, [isConsultationModalOpen, consultationData]);
 
@@ -40,12 +53,12 @@ export function ConsultationModal() {
 
   const handleIframeLoad = () => {
     // The iframe loads once initially (empty), and then again after form submission
-    setIframeLoadedCount(prev => prev + 1);
-    
+    setIframeLoadedCount((prev) => prev + 1);
+
     if (isSubmitting) {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      
+
       // Reset and close after a delay
       setTimeout(() => {
         setIsSubmitted(false);
@@ -93,19 +106,23 @@ export function ConsultationModal() {
                     Get Expert <br /> Consultation
                   </h2>
                   <p className="text-slate-300 text-sm leading-relaxed">
-                    Book a free design session with Bangalore's leading modular kitchen specialists.
+                    Book a free design session with Bangalore's leading modular
+                    kitchen specialists.
                   </p>
                 </div>
-                
+
                 <ul className="space-y-4">
                   {[
                     "Zero-cost Design Plan",
                     "Personalized Material Selection",
                     "Transparency in Pricing",
-                    "Expert Site Measurement"
+                    "Expert Site Measurement",
                   ].map((item, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm">
-                      <CheckCircle2 size={18} className="text-accent shrink-0" />
+                      <CheckCircle2
+                        size={18}
+                        className="text-accent shrink-0"
+                      />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -120,8 +137,8 @@ export function ConsultationModal() {
             {/* Right Side: Form */}
             <div className="md:w-3/5 p-8 md:p-12 overflow-y-auto bg-white">
               {isSubmitted ? (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }} 
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="h-full flex flex-col items-center justify-center text-center space-y-6"
                 >
@@ -129,9 +146,12 @@ export function ConsultationModal() {
                     <CheckCircle2 size={48} />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-primary mb-2">Thank You!</h3>
+                    <h3 className="text-2xl font-bold text-primary mb-2">
+                      Thank You!
+                    </h3>
                     <p className="text-slate-500">
-                      Your request has been received. Our expert will contact you within 24 hours.
+                      Your request has been received. Our expert will contact
+                      you within 24 hours.
                     </p>
                   </div>
                   <Button variant="outline" onClick={closeConsultationModal}>
@@ -141,26 +161,28 @@ export function ConsultationModal() {
               ) : (
                 <div className="space-y-8">
                   <div>
-                    <h3 className="text-xl font-bold text-primary mb-2">Direct Enquiry</h3>
+                    <h3 className="text-xl font-bold text-primary mb-2">
+                      Direct Enquiry
+                    </h3>
                     <p className="text-slate-500 text-sm">
                       Fill in the details below and we'll call you back.
                     </p>
                   </div>
 
-                  <iframe 
-                    name="hidden_iframe" 
-                    id="hidden_iframe" 
-                    style={{ display: 'none' }} 
+                  <iframe
+                    name="hidden_iframe"
+                    id="hidden_iframe"
+                    style={{ display: "none" }}
                     onLoad={handleIframeLoad}
                   ></iframe>
 
-                  <form 
+                  <form
                     action="https://forms.zohopublic.in/ambadaskitchens1/form/WebsiteEnquiry/formperma/7WR-IxLnQqiq82GpXQ5lkHIuhXmSjcMv75ie-tmmBKg/htmlRecords/submit"
                     method="POST"
                     acceptCharset="UTF-8"
                     encType="multipart/form-data"
                     target="hidden_iframe"
-                    onSubmit={handleSubmit} 
+                    onSubmit={handleSubmit}
                     className="space-y-5"
                   >
                     <input type="hidden" name="zf_referrer_name" value="" />
@@ -170,12 +192,17 @@ export function ConsultationModal() {
                     <div className="space-y-4">
                       {/* Name */}
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Full Name</label>
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">
+                          Full Name
+                        </label>
                         <div className="relative">
-                          <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                          <input 
+                          <User
+                            size={18}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                          />
+                          <input
                             required
-                            type="text" 
+                            type="text"
                             name="SingleLine1"
                             placeholder="e.g. John Doe"
                             className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all"
@@ -186,12 +213,17 @@ export function ConsultationModal() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Phone */}
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Phone Number</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">
+                            Phone Number
+                          </label>
                           <div className="relative">
-                            <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                            <input 
+                            <Phone
+                              size={18}
+                              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                            />
+                            <input
                               required
-                              type="tel" 
+                              type="tel"
                               name="PhoneNumber_countrycode"
                               placeholder="+91 94483 96322"
                               className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all"
@@ -200,12 +232,17 @@ export function ConsultationModal() {
                         </div>
                         {/* Email */}
                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Email Address</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">
+                            Email Address
+                          </label>
                           <div className="relative">
-                            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                            <input 
+                            <Mail
+                              size={18}
+                              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                            />
+                            <input
                               required
-                              type="email" 
+                              type="email"
                               name="Email"
                               placeholder="john@example.com"
                               className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all"
@@ -216,31 +253,46 @@ export function ConsultationModal() {
 
                       {/* Project Type */}
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Property Type</label>
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">
+                          Property Type
+                        </label>
                         <div className="relative">
-                          <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                          <select 
+                          <MapPin
+                            size={18}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                          />
+                          <select
                             name="SingleLine"
                             value={propertyType}
                             onChange={(e) => setPropertyType(e.target.value)}
                             className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all appearance-none"
                           >
-                            <option value="Modular Kitchen">Modular Kitchen</option>
-                            <option value="Wardrobes & Storage">Wardrobes & Storage</option>
-                            <option value="Full Home Interior">Full Home Interior</option>
-                            <option value="Commercial Spaces">Commercial Spaces</option>
+                            <option value="Modular Kitchen">
+                              Modular Kitchen
+                            </option>
+                            <option value="Wardrobes & Storage">
+                              Wardrobes & Storage
+                            </option>
+                            <option value="Full Home Interior">
+                              Full Home Interior
+                            </option>
+                            <option value="Commercial Spaces">
+                              Commercial Spaces
+                            </option>
                           </select>
                         </div>
                       </div>
 
                       {/* Budget Readonly if passed */}
                       {consultationData?.budget && (
-                         <div className="space-y-2">
-                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Selected Budget</label>
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">
+                            Selected Budget
+                          </label>
                           <div className="relative">
-                            <input 
+                            <input
                               disabled
-                              type="text" 
+                              type="text"
                               value={consultationData.budget}
                               className="w-full px-4 py-3.5 bg-slate-100 border border-slate-200 rounded-xl text-slate-500 font-medium cursor-not-allowed"
                             />
@@ -249,8 +301,8 @@ export function ConsultationModal() {
                       )}
                     </div>
 
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       disabled={isSubmitting}
                       className="w-full py-7 font-bold text-lg flex items-center justify-center gap-2 group"
                     >
@@ -262,13 +314,20 @@ export function ConsultationModal() {
                       ) : (
                         <>
                           Request Free Consultation
-                          <Send size={18} className="group-hover:translate-x-1 transition-transform" />
+                          <Send
+                            size={18}
+                            className="group-hover:translate-x-1 transition-transform"
+                          />
                         </>
                       )}
                     </Button>
 
                     <p className="text-[10px] text-center text-slate-400">
-                      By submitting, you agree to our <span className="underline italic cursor-pointer">Terms & Privacy Policy</span>.
+                      By submitting, you agree to our{" "}
+                      <span className="underline italic cursor-pointer">
+                        Terms & Privacy Policy
+                      </span>
+                      .
                     </p>
                   </form>
                 </div>

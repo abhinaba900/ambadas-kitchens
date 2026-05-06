@@ -25,7 +25,7 @@ export function FactoryLinkProcess() {
                 Manufacturing is just one part of the journey. Explore how we manage everything from the first design sketch to the final installation.
               </p>
               <Button asChild size="lg" className="bg-primary text-white hover:bg-slate-800 transition-colors group">
-                <Link href="/our-process">
+                <Link href="/our-process" className="flex items-center">
                   View Our Process
                   <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Link>

@@ -73,7 +73,7 @@ export function FactoryHero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 md:pt-20 border-t border-white/10"
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 md:py-10 border-t border-white/10"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center text-accent">
