@@ -84,21 +84,31 @@ export function Hero() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-              delay: 0.4,
-            }}
-            whileHover={{ scale: 1.05 }}
-            className="inline-block"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="relative group inline-block"
           >
-            <p className="text-xl md:text-2xl text-primary font-black uppercase tracking-tighter bg-white/80 backdrop-blur-sm px-6 py-3 rounded-2xl border border-primary/5 shadow-sm">
-              Delivering manufactured Kitchens{" "}
-              <br className="hidden md:block" /> to clients since 2003
-            </p>
+            {/* Subtle glow effect */}
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-accent to-primary rounded-[22px] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+            
+            <div className="relative flex items-center gap-4 md:gap-6 bg-white p-2 rounded-[20px] shadow-2xl border border-slate-50">
+              {/* Highlight Box */}
+              <div className="bg-accent text-primary px-4 py-3 rounded-[16px] flex flex-col items-center justify-center shadow-inner min-w-[80px]">
+                <span className="text-[9px] font-black uppercase tracking-widest leading-none mb-1 opacity-70">Since</span>
+                <span className="text-2xl font-black leading-none tracking-tighter">2003</span>
+              </div>
+              
+              {/* Text Content */}
+              <div className="pr-6 md:pr-10 text-left">
+                <h3 className="text-lg md:text-2xl font-black text-primary uppercase tracking-tighter leading-tight">
+                  Delivering <span className="text-accent">Manufactured</span> Kitchens
+                </h3>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mt-1">
+                  To Clients Across India
+                </p>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div

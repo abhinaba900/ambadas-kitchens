@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 export function AboutJourney() {
   const milestones = [
     {
-      year: "2004",
+      year: "2003",
       title: "The Beginning",
-      description: "Ambadas Kitchens founded as a small workshop in Bangalore, specializing in fine custom cabinetry.",
+      description: "Ambadas Interiors founded as a small workshop in Bangalore, specializing in fine custom cabinetry.",
     },
     {
       year: "2010",
