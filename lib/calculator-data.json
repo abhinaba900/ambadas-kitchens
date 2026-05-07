@@ -132,42 +132,45 @@
         "packages": [
           {
             "id": 1,
-            "name": "Essentials",
+            "name": "Elegance",
             "priceRange": "₹₹",
-            "description": "A range of essential home interior solutions that's perfect for all your needs.",
+            "description": "Standard home interior solutions featuring MR Ply for rooms and BWP Ply for kitchen with HDHMR shutters.",
             "image": "/images/calculator/packages/essentials.webp",
             "features": [
-              "Affordable pricing",
-              "Convenient designs",
-              "Basic accessories"
+              "MR Ply for Bedrooms",
+              "BWP Ply for Kitchen",
+              "Hettich Hardware",
+              "HDHMR Shutters"
             ],
-            "value": "essentials"
+            "value": "elegance"
           },
           {
             "id": 2,
-            "name": "Premium",
+            "name": "Marbello",
             "priceRange": "₹₹₹",
-            "description": "Superior home interior solutions that will take your interiors to the next level.",
+            "description": "Superior interior solutions with premium finishes and enhanced hardware durability.",
             "image": "/images/calculator/packages/premium.webp",
             "features": [
-              "Mid-range pricing",
-              "Premium designs",
-              "Wide range of accessories"
+              "Enhanced BWP Ply",
+              "Premium HDHMR Shutters",
+              "Hettich Hardware",
+              "Entertainment & Crockery Units"
             ],
-            "value": "premium"
+            "value": "marbello"
           },
           {
             "id": 3,
-            "name": "Luxe",
+            "name": "Ultima",
             "priceRange": "₹₹₹₹",
-            "description": "High-end interior solutions for the ultimate home interior experience you deserve.",
+            "description": "High-end luxury interior solutions with the finest materials and extensive accessory range.",
             "image": "/images/calculator/packages/luxe.webp",
             "features": [
-              "Elite pricing",
-              "Lavish designs",
-              "Extensive range of accessories"
+              "Luxury BWP/MR Ply",
+              "Elite HDHMR Shutters",
+              "Hettich Premium Range",
+              "Full Home Customization"
             ],
-            "value": "luxe"
+            "value": "ultima"
           }
         ]
       },
@@ -308,42 +311,42 @@
         "packages": [
           {
             "id": 1,
-            "name": "Essentials",
+            "name": "Elegance",
             "priceRange": "₹₹",
-            "description": "A range of basic units and accessories that are necessary for a comfortable modular kitchen.",
+            "description": "Standard kitchen solutions with MR Ply for cabinets and BWP Ply for wet areas.",
             "image": "/images/calculator/packages/essentials.webp",
             "features": [
-              "Affordable pricing",
-              "Convenient designs",
-              "Basic accessories"
+              "MR Ply Cabinets",
+              "BWP Ply Wet Areas",
+              "Standard Accessories"
             ],
-            "value": "essentials"
+            "value": "elegance"
           },
           {
             "id": 2,
-            "name": "Premium",
+            "name": "Marbello",
             "priceRange": "₹₹₹",
-            "description": "An exquisite offering with sleek fixtures, hardware, cabinets and fittings for an elegant kitchen design.",
+            "description": "Premium kitchen solutions with high-gloss finishes and advanced hardware.",
             "image": "/images/calculator/packages/premium.webp",
             "features": [
-              "Mid-range pricing",
-              "Premium designs",
-              "Wide range of accessories"
+              "Premium Finishes",
+              "Soft-close Drawers",
+              "Enhanced Accessories"
             ],
-            "value": "premium"
+            "value": "marbello"
           },
           {
             "id": 3,
-            "name": "Luxe",
+            "name": "Ultima",
             "priceRange": "₹₹₹₹",
-            "description": "A swanky kitchen package that's a fine blend of aesthetics and high functionality with chic-looking units and accessories.",
+            "description": "Elite kitchen solutions with luxury PU finishes and top-of-the-line appliances.",
             "image": "/images/calculator/packages/luxe.webp",
             "features": [
-              "Elite pricing",
-              "Lavish designs",
-              "Extensive range of accessories"
+              "Luxury PU Finish",
+              "Elite Accessories",
+              "Smart Storage Solutions"
             ],
-            "value": "luxe"
+            "value": "ultima"
           },
           {
             "id": 4,
@@ -382,37 +385,84 @@
     "steps": [
       {
         "step": 1,
-        "title": "What is the height of your wardrobe?",
+        "title": "What is the width of your wardrobe?",
         "infoText": "Want to know more. Check here",
         "note": "Standard size has been set for your convenience",
-        "field": "wardrobeHeight",
+        "field": "wardrobeWidth",
         "selectionType": "single",
         "options": [
           {
             "id": 1,
             "label": "4 ft",
-            "value": "4_ft"
+            "value": 4
           },
           {
             "id": 2,
             "label": "6 ft",
-            "value": "6_ft"
+            "value": 6
           },
           {
             "id": 3,
             "label": "7 ft",
-            "value": "7_ft",
+            "value": 7,
             "default": true
           },
           {
             "id": 4,
             "label": "9 ft",
-            "value": "9_ft"
+            "value": 9
           }
         ]
       },
       {
         "step": 2,
+        "title": "Pick your package",
+        "field": "wardrobePackageSelection",
+        "selectionType": "single",
+        "packages": [
+          {
+            "id": 1,
+            "name": "Elegance",
+            "priceRange": "₹₹",
+            "description": "Premium look with durable laminate finishes and standard accessories.",
+            "image": "/images/calculator/packages/essentials.webp",
+            "features": [
+              "Standard Laminate",
+              "Hettich Hardware",
+              "Durable Structure"
+            ],
+            "value": "elegance"
+          },
+          {
+            "id": 2,
+            "name": "Marbello",
+            "priceRange": "₹₹₹",
+            "description": "Superior finish with membrane doors and enhanced storage options.",
+            "image": "/images/calculator/packages/premium.webp",
+            "features": [
+              "Premium Membrane",
+              "Enhanced Hardware",
+              "Soft-close Fittings"
+            ],
+            "value": "marbello"
+          },
+          {
+            "id": 3,
+            "name": "Ultima",
+            "priceRange": "₹₹₹₹",
+            "description": "High-end luxury with acrylic finishes and specialized organizers.",
+            "image": "/images/calculator/packages/luxe.webp",
+            "features": [
+              "Luxury Acrylic",
+              "Elite Organizers",
+              "Full Personalization"
+            ],
+            "value": "ultima"
+          }
+        ]
+      },
+      {
+        "step": 3,
         "title": "Select the type of wardrobe",
         "field": "wardrobeType",
         "selectionType": "single",
@@ -436,7 +486,7 @@
         ]
       },
       {
-        "step": 3,
+        "step": 4,
         "title": "Select your preferred finish",
         "field": "wardrobeFinish",
         "selectionType": "single",
@@ -468,7 +518,7 @@
         ]
       },
       {
-        "step": 4,
+        "step": 5,
         "title": "Select your preferred core material",
         "infoText": "Your core material options will be dependent on the finish you have chosen.",
         "field": "wardrobeCoreMaterial",
@@ -505,7 +555,7 @@
         ]
       },
       {
-        "step": 5,
+        "step": 6,
         "title": "Add your preferred accessories (optional)",
         "field": "wardrobeAccessories",
         "selectionType": "multiple",
@@ -543,7 +593,7 @@
         ]
       },
       {
-        "step": 6,
+        "step": 7,
         "title": "Almost there!",
         "field": "contactInfo",
         "selectionType": "form",

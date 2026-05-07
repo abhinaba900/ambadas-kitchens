@@ -547,25 +547,47 @@ function CalculationResults({ activeCalculator, formData, onReset, formatCurrenc
     let base = 0;
     
     if (activeCalculator.slug === "full-home") {
-      const bhkMultipliers: any = { "1_bhk": 450000, "2_bhk": 650000, "3_bhk": 850000, "4_bhk": 1200000, "5_bhk_plus": 1500000 };
-      base = bhkMultipliers[formData.bhkType] || 500000;
+      const pricing: any = {
+        "1_bhk": { elegance: 350000, marbello: 450000, ultima: 550000 },
+        "2_bhk": { elegance: 450000, marbello: 550000, ultima: 650000 },
+        "3_bhk": { elegance: 550000, marbello: 650000, ultima: 750000 },
+        "4_bhk": { elegance: 900000, marbello: 1000000, ultima: 1100000 },
+        "5_bhk_plus": { elegance: 1100000, marbello: 1200000, ultima: 1300000 }
+      };
       
-      if (formData.bhkType_size === "large") base *= 1.2;
+      const bhk = formData.bhkType || "2_bhk";
+      const pkg = formData.packageSelection || "elegance";
+      base = pricing[bhk]?.[pkg] || 450000;
       
-      const packageMult: any = { "essentials": 1, "premium": 1.4, "luxe": 1.9 };
-      base *= (packageMult[formData.packageSelection] || 1);
+      if (formData.bhkType_size === "large") base *= 1.1;
     } 
     else if (activeCalculator.slug === "kitchen") {
-      const layoutBase: any = { "l_shaped": 150000, "straight": 100000, "u_shaped": 200000, "parallel": 180000 };
-      base = layoutBase[formData.kitchenLayout] || 150000;
+      const packageRates: any = { "elegance": 1500, "marbello": 1800, "ultima": 2200, "custom_package": 1650 };
+      const rate = packageRates[formData.kitchenPackageSelection] || 1500;
       
-      const packageMult: any = { "essentials": 1, "premium": 1.5, "luxe": 2.2, "custom_package": 1.3 };
-      base *= (packageMult[formData.kitchenPackageSelection] || 1);
+      // Calculate total running feet from measurements
+      let totalRunningFeet = 0;
+      if (formData.kitchenMeasurements) {
+        totalRunningFeet = Object.values(formData.kitchenMeasurements).reduce((acc: number, val: any) => acc + (Number(val) || 0), 0);
+      } else {
+        // Fallback to default layout lengths if measurements not explicitly set
+        const defaults: any = { "l_shaped": 11, "straight": 8, "u_shaped": 31, "parallel": 16 };
+        totalRunningFeet = defaults[formData.kitchenLayout] || 10;
+      }
+
+      // Sqft = Running Feet * Standard Height (5ft for base + wall units)
+      const sqft = totalRunningFeet * 5;
+      base = sqft * rate;
     }
     else if (activeCalculator.slug === "wardrobe") {
-      base = 45000;
-      const finishMult: any = { "laminate": 1, "membrane": 1.3, "acrylic": 1.7 };
-      base *= (finishMult[formData.wardrobeFinish] || 1);
+      const packageRates: any = { "elegance": 1250, "marbello": 1500, "ultima": 1750 };
+      const rate = packageRates[formData.wardrobePackageSelection] || 1250;
+      
+      const width = Number(formData.wardrobeWidth) || 7;
+      const height = 7; // Standard height in feet
+      
+      const sqft = width * height;
+      base = sqft * rate;
       
       if (formData.wardrobeAccessories?.length > 0) {
         base += formData.wardrobeAccessories.length * 5000;
@@ -573,8 +595,8 @@ function CalculationResults({ activeCalculator, formData, onReset, formatCurrenc
     }
 
     setEstimate({
-      min: Math.floor((base * 0.95) / 1000) * 1000,
-      max: Math.ceil((base * 1.15) / 1000) * 1000,
+      min: Math.floor((base * 0.98) / 1000) * 1000,
+      max: Math.ceil((base * 1.05) / 1000) * 1000,
     });
   }, [activeCalculator, formData]);
 
@@ -630,7 +652,7 @@ Please contact me for a detailed quote!`;
             </div>
             <div className="text-center">
               <p className="text-[10px] text-white/40 uppercase font-black tracking-widest mb-1">Package</p>
-              <p className="font-bold text-sm">{formData.packageSelection || formData.kitchenPackageSelection || "Standard"}</p>
+              <p className="font-bold text-sm">{formData.packageSelection || formData.kitchenPackageSelection || formData.wardrobePackageSelection || "Standard"}</p>
             </div>
           </div>
 
