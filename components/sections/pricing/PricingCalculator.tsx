@@ -2,104 +2,83 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
-import { Calculator, ChevronRight, Info, Layout, Layers, Box, Check, Ruler, Home } from "lucide-react";
+import { 
+  Calculator, 
+  ChevronRight, 
+  ChevronLeft, 
+  Info, 
+  Check, 
+  Home, 
+  Utensils, 
+  Archive, 
+  Plus, 
+  Minus, 
+  ArrowRight,
+  Phone,
+  User,
+  Mail,
+  MapPin
+} from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import calculatorData from "@/lib/calculator-data.json";
+import Image from "next/image";
 
-const LAYOUTS = [
-  { id: "1BHK", name: "1 BHK", rooms: ["kitchen", "living", "masterBed"] },
-  { id: "2BHK", name: "2 BHK", rooms: ["kitchen", "living", "masterBed", "guestBed"] },
-  { id: "3BHK", name: "3 BHK", rooms: ["kitchen", "living", "masterBed", "kidsBed", "guestBed", "dining"] },
-  { id: "4BHK", name: "4 BHK", rooms: ["kitchen", "living", "masterBed", "kidsBed", "guestBed", "dining", "foyer"] },
-  { id: "Villa", name: "Villa", rooms: ["kitchen", "living", "masterBed", "kidsBed", "guestBed", "dining", "foyer", "utility"] },
-];
+// Types based on JSON structure
+type CalculatorType = "full_home_calculator" | "kitchen_calculator" | "wardrobe_calculator";
 
-const ROOM_OPTIONS = [
-  { id: "kitchen", name: "Modular Kitchen", pricePerSqFt: 1800, defaultSqFt: 80, min: 40, max: 200, icon: <Layout className="w-5 h-5" /> },
-  { id: "living", name: "Living Room (TV Unit + Decor)", pricePerSqFt: 1200, defaultSqFt: 60, min: 20, max: 150, icon: <Box className="w-5 h-5" /> },
-  { id: "masterBed", name: "Master Bedroom (Wardrobe + Bed)", pricePerSqFt: 1400, defaultSqFt: 120, min: 60, max: 250, icon: <Layers className="w-5 h-5" /> },
-  { id: "kidsBed", name: "Kids' Bedroom", pricePerSqFt: 1300, defaultSqFt: 100, min: 40, max: 200, icon: <Layers className="w-5 h-5 opacity-70" /> },
-  { id: "guestBed", name: "Guest Bedroom", pricePerSqFt: 1250, defaultSqFt: 90, min: 40, max: 180, icon: <Layers className="w-5 h-5 opacity-40" /> },
-  { id: "dining", name: "Dining Area", pricePerSqFt: 1100, defaultSqFt: 40, min: 20, max: 100, icon: <Layout className="w-5 h-5 rotate-90" /> },
-  { id: "foyer", name: "Foyer / Shoe Rack", pricePerSqFt: 1500, defaultSqFt: 20, min: 10, max: 50, icon: <Ruler className="w-5 h-5" /> },
-  { id: "utility", name: "Utility / Balcony", pricePerSqFt: 1000, defaultSqFt: 30, min: 15, max: 80, icon: <Box size={18} /> },
-];
-
-const PACKAGE_TIERS = [
-  { 
-    id: "essential", 
-    name: "Essential", 
-    multiplier: 1.0, 
-    desc: "Laminate + Commercial Plywood",
-    highlight: "Value for Money"
-  },
-  { 
-    id: "premium", 
-    name: "Premium", 
-    multiplier: 1.4, 
-    desc: "Acrylic/Membrane + BWP Plywood",
-    highlight: "Most Popular"
-  },
-  { 
-    id: "elite", 
-    name: "Elite", 
-    multiplier: 1.9, 
-    desc: "HDMR/PU + High-Gloss Glass",
-    highlight: "Uber Luxury"
-  },
-];
+interface CalculatorOption {
+  id: number;
+  slug: string;
+  title: string;
+  description: string;
+  buttonText: string;
+  type: CalculatorType;
+  icon: string;
+  steps: any[];
+}
 
 export function PricingCalculator() {
-  const [layout, setLayout] = useState("2BHK");
-  const [selectedRooms, setSelectedRooms] = useState<string[]>(LAYOUTS[1].rooms);
-  const [roomSizes, setRoomSizes] = useState<Record<string, number>>(
-    ROOM_OPTIONS.reduce((acc, room) => ({ ...acc, [room.id]: room.defaultSqFt }), {})
-  );
-  const [packageTier, setPackageTier] = useState("premium");
-  const [includeServices, setIncludeServices] = useState(false);
-  const [estimate, setEstimate] = useState({ min: 0, max: 0 });
+  const [activeCalculator, setActiveCalculator] = useState<CalculatorOption | null>(null);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [formData, setFormData] = useState<any>({});
+  const [isCalculated, setIsCalculated] = useState(false);
 
-  const handleLayoutChange = (layoutId: string) => {
-    setLayout(layoutId);
-    const layoutConfig = LAYOUTS.find(l => l.id === layoutId);
-    if (layoutConfig) {
-      setSelectedRooms(layoutConfig.rooms);
+  const handleSelectCalculator = (calc: any) => {
+    setActiveCalculator(calc);
+    setCurrentStep(0);
+    setFormData({});
+    setIsCalculated(false);
+  };
+
+  const handleNext = () => {
+    if (activeCalculator && currentStep < activeCalculator.steps.length - 1) {
+      setCurrentStep(prev => prev + 1);
+    } else {
+      setIsCalculated(true);
     }
   };
 
-  const toggleRoom = (roomId: string) => {
-    setSelectedRooms(prev => 
-      prev.includes(roomId) ? prev.filter(r => r !== roomId) : [...prev, roomId]
-    );
-  };
-
-  const updateRoomSize = (roomId: string, size: number) => {
-    setRoomSizes(prev => ({ ...prev, [roomId]: size }));
-  };
-
-  useEffect(() => {
-    const tier = PACKAGE_TIERS.find(t => t.id === packageTier);
-    const multiplier = tier?.multiplier || 1;
-    
-    let baseTotal = selectedRooms.reduce((acc, roomId) => {
-      const room = ROOM_OPTIONS.find(r => r.id === roomId);
-      const size = roomSizes[roomId] || room?.defaultSqFt || 0;
-      return acc + (size * (room?.pricePerSqFt || 0));
-    }, 0);
-
-    baseTotal *= multiplier;
-
-    if (includeServices) {
-      baseTotal *= 1.25; // Civil Services (Painting, False Ceiling, Electrical etc)
+  const handleBack = () => {
+    if (isCalculated) {
+      setActiveCalculator(null);
+      setIsCalculated(false);
+      setCurrentStep(0);
+      return;
     }
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+    } else {
+      setActiveCalculator(null);
+    }
+  };
 
-    setEstimate({
-      min: Math.floor((baseTotal * 0.9) / 5000) * 5000,
-      max: Math.ceil((baseTotal * 1.1) / 5000) * 5000,
-    });
-  }, [selectedRooms, roomSizes, packageTier, includeServices]);
+  const updateFormData = (field: string, value: any) => {
+    setFormData((prev: any) => ({ ...prev, [field]: value }));
+  };
 
+  // Format currency
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -109,264 +88,581 @@ export function PricingCalculator() {
   };
 
   return (
-    <section id="calculator" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            
-            {/* INPUT SECTION */}
-            <div className="lg:col-span-7 bg-slate-50 p-8 md:p-12 rounded-[3rem] border border-slate-100 shadow-sm">
-              <div className="space-y-12">
-                
-                {/* Step 1: Layout */}
-                <div>
-                  <label className="flex items-center gap-3 text-primary font-bold text-lg mb-6">
-                    <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">1</span>
-                    Select Your Flat Layout
-                  </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                    {LAYOUTS.map((l) => (
-                      <button
-                        key={l.id}
-                        onClick={() => handleLayoutChange(l.id)}
-                        className={cn(
-                          "py-4 px-2 rounded-2xl text-sm font-bold transition-all border-2 flex flex-col items-center gap-2",
-                          layout === l.id
-                            ? "bg-primary text-white border-primary shadow-lg scale-[1.05]"
-                            : "bg-white text-slate-500 border-slate-100 hover:border-primary/20"
-                        )}
-                      >
-                        <Home className="w-5 h-5" />
-                        {l.name}
-                      </button>
-                    ))}
-                  </div>
+    <section id="calculator" className="py-24 bg-slate-50 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-1/4 h-1/4 bg-accent/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-5xl mx-auto">
+          
+          <AnimatePresence mode="wait">
+            {!activeCalculator ? (
+              <motion.div 
+                key="selector"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-12"
+              >
+                <div className="text-center space-y-4">
+                  <h2 className="text-4xl md:text-5xl font-display font-black text-primary tracking-tight">
+                    Instant <span className="text-accent">Pricing</span> Calculator
+                  </h2>
+                  <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+                    Get a transparent factory-cost estimate for your dream interiors in less than 2 minutes.
+                  </p>
                 </div>
 
-                {/* Step 2: Rooms */}
-                <div>
-                  <label className="flex items-center gap-3 text-primary font-bold text-lg mb-6">
-                    <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">2</span>
-                    Select Rooms & Sizes (Sq. Ft.)
-                  </label>
-                  <div className="grid grid-cols-1 gap-4">
-                    {ROOM_OPTIONS.map((room) => {
-                      const isSelected = selectedRooms.includes(room.id);
-                      const currentSize = roomSizes[room.id] || room.defaultSqFt;
-                      const roomMultiplier = PACKAGE_TIERS.find(t => t.id === packageTier)?.multiplier || 1;
-                      const roomSubtotal = currentSize * room.pricePerSqFt * roomMultiplier;
-
-                      return (
-                        <div 
-                          key={room.id}
-                          className={cn(
-                            "rounded-[2rem] border-2 transition-all overflow-hidden",
-                            isSelected
-                              ? "bg-white border-accent shadow-md"
-                              : "bg-white/50 border-white text-slate-400 hover:border-primary/10"
-                          )}
-                        >
-                          <div 
-                            onClick={() => toggleRoom(room.id)}
-                            className="flex items-center justify-between p-5 cursor-pointer group"
-                          >
-                            <div className="flex items-center gap-4">
-                              <div className={cn(
-                                "w-12 h-12 rounded-2xl flex items-center justify-center transition-colors shadow-sm",
-                                isSelected ? "bg-accent/20 text-accent" : "bg-white border border-slate-100 text-slate-400 group-hover:bg-primary/5"
-                              )}>
-                                {room.icon}
-                              </div>
-                              <div className="text-left">
-                                <p className={cn("font-bold text-base transition-colors", isSelected ? "text-primary" : "text-slate-500")}>
-                                  {room.name}
-                                </p>
-                                <p className="text-[10px] uppercase tracking-widest font-black opacity-60">
-                                  {isSelected ? `${currentSize} Sq. Ft. • ~${formatCurrency(roomSubtotal)}` : `Starts at ~${formatCurrency(room.defaultSqFt * room.pricePerSqFt)}`}
-                                </p>
-                              </div>
-                            </div>
-                            <div className={cn(
-                              "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
-                              isSelected ? "bg-secondary border-secondary text-white" : "border-slate-200"
-                            )}>
-                              {isSelected && <Check size={14} strokeWidth={4} />}
-                            </div>
-                          </div>
-
-                          <AnimatePresence>
-                            {isSelected && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                className="px-6 pb-6 pt-2 border-t border-slate-50"
-                              >
-                                <div className="space-y-4">
-                                  <div className="flex justify-between items-center text-xs font-bold uppercase text-slate-400">
-                                    <span>Area Size</span>
-                                    <span className="text-primary bg-primary/5 px-2 py-0.5 rounded-lg">{currentSize} sqft</span>
-                                  </div>
-                                  <input
-                                    type="range"
-                                    min={room.min}
-                                    max={room.max}
-                                    step="5"
-                                    value={currentSize}
-                                    onChange={(e) => updateRoomSize(room.id, parseInt(e.target.value))}
-                                    className="w-full h-2 bg-slate-100 rounded-full appearance-none cursor-pointer accent-accent"
-                                  />
-                                  <div className="flex justify-between text-[10px] text-slate-300 font-bold">
-                                    <span>{room.min}ft</span>
-                                    <span>{room.max}ft</span>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {calculatorData.map((calc) => (
+                    <button
+                      key={calc.id}
+                      onClick={() => handleSelectCalculator(calc)}
+                      className="group relative bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 text-left overflow-hidden"
+                    >
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[5rem] group-hover:scale-110 transition-transform duration-500" />
+                      
+                      <div className="relative z-10 space-y-6">
+                        <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+                          {calc.slug === "full-home" && <Home size={32} />}
+                          {calc.slug === "kitchen" && <Utensils size={32} />}
+                          {calc.slug === "wardrobe" && <Archive size={32} />}
                         </div>
-                      );
-                    })}
-                  </div>
+                        
+                        <div>
+                          <h3 className="text-2xl font-bold text-primary mb-2">{calc.title}</h3>
+                          <p className="text-slate-500 text-sm leading-relaxed">{calc.description}</p>
+                        </div>
+
+                        <div className="flex items-center gap-2 text-accent font-black text-sm group-hover:gap-4 transition-all">
+                          {calc.buttonText} <ChevronRight size={18} />
+                        </div>
+                      </div>
+                    </button>
+                  ))}
                 </div>
 
-                {/* Step 3: Tier */}
-                <div>
-                  <label className="flex items-center gap-3 text-primary font-bold text-lg mb-6">
-                    <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black">3</span>
-                    Choose Quality & Finish
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {PACKAGE_TIERS.map((tier) => (
-                      <button
-                        key={tier.id}
-                        onClick={() => setPackageTier(tier.id)}
-                        className={cn(
-                          "relative p-6 rounded-3xl border-2 text-left transition-all overflow-hidden",
-                          packageTier === tier.id
-                            ? "bg-white border-accent shadow-xl scale-[1.02]"
-                            : "bg-white/50 border-white text-slate-500 hover:bg-white hover:border-primary/10"
-                        )}
-                      >
-                        {packageTier === tier.id && (
-                          <div className="absolute top-0 right-0 bg-accent text-primary px-3 py-1 text-[10px] font-black uppercase rounded-bl-xl tracking-tighter">
-                            {tier.highlight}
-                          </div>
-                        )}
-                        <h4 className="font-bold text-primary mb-1">{tier.name}</h4>
-                        <p className="text-xs text-slate-500 leading-relaxed">{tier.desc}</p>
-                      </button>
-                    ))}
+                <div className="bg-white/50 backdrop-blur-sm border border-white p-6 rounded-3xl flex items-center gap-4 max-w-3xl mx-auto">
+                  <div className="w-12 h-12 bg-accent/20 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <Info size={24} />
                   </div>
+                  <p className="text-sm text-slate-600 italic">
+                    <span className="font-bold">Trust Ambadas:</span> Our estimates are based on real factory production costs, ensuring you get the best value without middleman markups.
+                  </p>
                 </div>
-
-                {/* Step 4: Services */}
-                <div className="p-6 bg-primary/5 rounded-[2rem] border border-primary/10 flex items-center justify-between">
+              </motion.div>
+            ) : (
+              <motion.div
+                key="calculator-active"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                className="bg-white rounded-[3rem] shadow-2xl border border-slate-100 overflow-hidden min-h-[600px] flex flex-col"
+              >
+                {/* Header / Progress */}
+                <div className="p-8 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm">
-                      <Layers size={22} />
-                    </div>
+                    <button 
+                      onClick={handleBack}
+                      className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-primary hover:border-primary transition-all shadow-sm"
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
                     <div>
-                      <h4 className="font-bold text-primary text-sm">Include Civil & Services</h4>
-                      <p className="text-[11px] text-slate-500">Painting, False Ceiling, Electrical Work (+25%)</p>
+                      <h3 className="text-xl font-bold text-primary">{activeCalculator.title} Estimate</h3>
+                      <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Step {currentStep + 1} of {activeCalculator.steps.length}</p>
                     </div>
                   </div>
-                  <button 
-                    onClick={() => setIncludeServices(!includeServices)}
-                    className={cn(
-                      "w-12 h-6 rounded-full transition-colors relative flex items-center px-1",
-                      includeServices ? "bg-accent" : "bg-slate-300"
-                    )}
-                  >
+                  
+                  {/* Progress Bar */}
+                  <div className="hidden md:flex flex-1 max-w-xs mx-10 h-2 bg-slate-200 rounded-full overflow-hidden">
                     <motion.div 
-                      animate={{ x: includeServices ? 24 : 0 }}
-                      className="w-4 h-4 bg-white rounded-full shadow-sm" 
+                      className="h-full bg-accent"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${((currentStep + 1) / activeCalculator.steps.length) * 100}%` }}
+                      transition={{ duration: 0.5 }}
                     />
-                  </button>
+                  </div>
+
+                  <div className="flex items-center gap-2 px-4 py-2 bg-primary/5 rounded-full border border-primary/10">
+                    <Calculator size={16} className="text-primary" />
+                    <span className="text-sm font-bold text-primary">Live Calculator</span>
+                  </div>
                 </div>
 
-              </div>
-            </div>
-
-            {/* OUTPUT SECTION */}
-            <div className="lg:col-span-5">
-              <div className="sticky top-28 space-y-6">
-                <div className="bg-primary rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2" />
-                  
-                  <div className="relative z-10 flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-white/10 rounded-3xl flex items-center justify-center mb-6">
-                      <Calculator size={30} className="text-accent" />
-                    </div>
-                    
-                    <span className="text-accent font-black text-sm uppercase tracking-[0.2em] mb-4">
-                      {layout} INTERIOR ESTIMATE
-                    </span>
-                    
+                {/* Content */}
+                <div className="flex-1 p-8 md:p-12">
+                  {!isCalculated ? (
                     <AnimatePresence mode="wait">
                       <motion.div
-                        key={estimate.min + estimate.max}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 1.1 }}
-                        className="flex flex-col gap-2 mb-6"
+                        key={currentStep}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="h-full"
                       >
-                        <div className="text-4xl md:text-5xl lg:text-6xl font-display font-black tracking-tight flex items-center justify-center flex-wrap gap-4">
-                          <span className="text-accent">{formatCurrency(estimate.min)}</span>
-                          <span className="text-white/20 text-3xl font-light">—</span>
-                          <span className="text-accent">{formatCurrency(estimate.max)}</span>
-                        </div>
+                        <StepRenderer 
+                          step={activeCalculator.steps[currentStep]} 
+                          formData={formData}
+                          updateFormData={updateFormData}
+                          onNext={handleNext}
+                        />
                       </motion.div>
                     </AnimatePresence>
+                  ) : (
+                    <CalculationResults 
+                      activeCalculator={activeCalculator} 
+                      formData={formData} 
+                      onReset={() => setActiveCalculator(null)}
+                      formatCurrency={formatCurrency}
+                    />
+                  )}
+                </div>
 
-                    <p className="text-white/60 text-sm font-medium mb-10 max-w-xs mx-auto italic">
-                      Disclaimer: This is a rough factory-cost estimate. Final pricing may vary based on exact measurements.
+                {/* Footer Controls */}
+                {!isCalculated && (
+                  <div className="p-8 border-t border-slate-50 bg-slate-50/30 flex items-center justify-between">
+                    <p className="text-slate-400 text-sm hidden md:block italic">
+                      All data is processed securely to provide an accurate estimate.
                     </p>
-
-                    <div className="w-full space-y-4">
-                      <a 
-                        href={`https://wa.me/919448396322?text=Hello Ambadas Kitchens! I just checked your ${layout} pricing calculator.
-
-Room Breakdown:
-${selectedRooms.map(id => `- ${ROOM_OPTIONS.find(r => r.id === id)?.name}: ${roomSizes[id]} sqft`).join('\n')}
-
-Quality Tier: ${packageTier.toUpperCase()}
-Services Included: ${includeServices ? 'YES (Painting/Ceiling)' : 'NO'}
-
-Total Estimated Cost: ${formatCurrency(estimate.min)} - ${formatCurrency(estimate.max)}
-
-Please share a detailed quote!`} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-[#25D366] text-white rounded-2xl font-bold hover:scale-105 transition-all shadow-xl group text-center"
+                    <div className="flex gap-4 w-full md:w-auto">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 md:flex-none h-14 px-8 rounded-2xl"
+                        onClick={handleBack}
                       >
-                        <FaWhatsapp size={22} className="mr-3" />
-                        WHATSAPP ESTIMATE
-                      </a>
-                      <p className="text-white/40 text-xs font-bold uppercase tracking-wider">
-                        Get exact pricing in 10 mins on WhatsApp.
-                      </p>
+                        {currentStep === 0 ? "Change Category" : "Back"}
+                      </Button>
+                      <Button 
+                        className="flex-1 md:flex-none h-14 px-10 rounded-2xl bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20"
+                        onClick={handleNext}
+                        disabled={!isStepValid(activeCalculator.steps[currentStep], formData)}
+                      >
+                        {currentStep === activeCalculator.steps.length - 1 ? "Finish & Calculate" : "Next Step"}
+                        <ChevronRight size={20} className="ml-2" />
+                      </Button>
                     </div>
                   </div>
-                </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-                <div className="bg-slate-50 border-2 border-primary/5 rounded-3xl p-6 flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Info size={18} className="text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-primary mb-1">What's in your Estimate?</h4>
-                    <p className="text-slate-500 text-sm leading-relaxed">
-                      Includes 18mm BWP Plywood/HDMR cabinets, German hardware, designer handles, and factory-finish installation.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
         </div>
       </div>
     </section>
+  );
+}
+
+// Validation logic
+function isStepValid(step: any, formData: any) {
+  const value = formData[step.field];
+  if (step.selectionType === "single") return !!value;
+  if (step.selectionType === "multiple") return true; // Optional
+  if (step.selectionType === "counter") return true; // Has defaults
+  if (step.selectionType === "measurement") return true; // Has defaults
+  if (step.selectionType === "form") {
+    return formData.userName && formData.userPhone && formData.userPhone.length >= 10;
+  }
+  return true;
+}
+
+// Sub-component to render different step types
+function StepRenderer({ step, formData, updateFormData, onNext }: any) {
+  const currentValue = formData[step.field];
+
+  return (
+    <div className="space-y-8 h-full flex flex-col">
+      <div className="space-y-2">
+        <h2 className="text-3xl font-display font-black text-primary tracking-tight">{step.title}</h2>
+        {step.infoText && (
+          <p className="text-slate-500 text-sm flex items-center gap-2">
+            <Info size={14} className="text-accent" /> {step.infoText}
+          </p>
+        )}
+      </div>
+
+      <div className="flex-1">
+        {step.selectionType === "single" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {(step.options || step.layouts || step.packages).map((opt: any) => {
+              const isSelected = currentValue === (opt.value || opt.type);
+              return (
+                <button
+                  key={opt.id}
+                  onClick={() => updateFormData(step.field, opt.value || opt.type)}
+                  className={cn(
+                    "relative p-6 rounded-3xl border-2 text-left transition-all duration-300 group overflow-hidden h-full flex flex-col",
+                    isSelected 
+                      ? "border-accent bg-accent/5 shadow-md" 
+                      : "border-slate-100 hover:border-primary/20 hover:bg-slate-50"
+                  )}
+                >
+                  {opt.image && (
+                    <div className="relative aspect-video mb-4 rounded-xl overflow-hidden bg-slate-100">
+                      <Image 
+                        src={opt.image} 
+                        alt={opt.name || opt.label} 
+                        fill 
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-bold text-primary">{opt.name || opt.label}</h4>
+                    {isSelected && (
+                      <div className="w-6 h-6 rounded-full bg-accent text-primary flex items-center justify-center">
+                        <Check size={14} strokeWidth={4} />
+                      </div>
+                    )}
+                  </div>
+                  {opt.description && <p className="text-xs text-slate-500 line-clamp-2 mb-3">{opt.description}</p>}
+                  {opt.priceRange && (
+                    <span className="mt-auto text-xs font-black tracking-widest text-accent uppercase">{opt.priceRange}</span>
+                  )}
+                  {opt.sizes && isSelected && opt.hasSizeSelection && (
+                    <div className="mt-4 pt-4 border-t border-accent/20 grid grid-cols-2 gap-2">
+                      {opt.sizes.map((s: any) => (
+                        <div 
+                          key={s.id}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            updateFormData(`${step.field}_size`, s.value);
+                          }}
+                          className={cn(
+                            "px-3 py-2 rounded-xl text-[10px] font-bold text-center transition-all cursor-pointer",
+                            formData[`${step.field}_size`] === s.value 
+                              ? "bg-primary text-white" 
+                              : "bg-white text-slate-400 border border-slate-100"
+                          )}
+                        >
+                          <div className="flex flex-col items-center">
+                            <span className="leading-tight">{s.label}</span>
+                            {s.description && (
+                              <span className={cn(
+                                "text-[7px] font-medium mt-0.5",
+                                formData[`${step.field}_size`] === s.value ? "text-white/70" : "text-slate-400"
+                              )}>
+                                {s.description}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {step.selectionType === "counter" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {step.rooms.map((room: any) => {
+              const val = formData[`${step.field}_${room.value}`] ?? room.default;
+              return (
+                <div key={room.id} className="flex items-center justify-between p-6 bg-slate-50 rounded-3xl border border-slate-100">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm">
+                      {room.value.includes('kitchen') ? <Utensils size={20} /> : <Home size={20} />}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-primary">{room.name}</h4>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Unit: {val}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 bg-white p-1 rounded-2xl border border-slate-100 shadow-sm">
+                    <button 
+                      onClick={() => updateFormData(`${step.field}_${room.value}`, Math.max(room.min, val - 1))}
+                      className="w-10 h-10 rounded-xl hover:bg-slate-50 flex items-center justify-center text-slate-500 transition-colors"
+                    >
+                      <Minus size={18} />
+                    </button>
+                    <span className="w-8 text-center font-black text-primary">{val}</span>
+                    <button 
+                      onClick={() => updateFormData(`${step.field}_${room.value}`, val + 1)}
+                      className="w-10 h-10 rounded-xl hover:bg-slate-50 flex items-center justify-center text-slate-500 transition-colors"
+                    >
+                      <Plus size={18} />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {step.selectionType === "measurement" && (
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+              <div className="relative aspect-square bg-slate-100 rounded-[2rem] overflow-hidden">
+                {/* Find current layout image */}
+                {(() => {
+                  const layout = step.layouts.find((l: any) => l.layoutType === formData.kitchenLayout);
+                  return layout && (
+                    <Image 
+                      src={layout.image} 
+                      alt="Kitchen Measurement" 
+                      fill 
+                      className="object-contain p-8"
+                    />
+                  );
+                })()}
+              </div>
+              <div className="space-y-6">
+                {step.layouts.find((l: any) => l.layoutType === formData.kitchenLayout)?.measurements.map((m: any, idx: number) => {
+                  const key = `${step.field}_${m.label}`;
+                  const val = formData[key] ?? m.default;
+                  return (
+                    <div key={idx} className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <label className="text-sm font-bold text-primary">Dimension {m.label} ({m.unit})</label>
+                        <span className="text-accent font-black">{val} {m.unit}</span>
+                      </div>
+                      <input 
+                        type="range"
+                        min="2"
+                        max="20"
+                        step="0.5"
+                        value={val}
+                        onChange={(e) => updateFormData(key, parseFloat(e.target.value))}
+                        className="w-full h-2 bg-slate-100 rounded-full appearance-none cursor-pointer accent-accent"
+                      />
+                    </div>
+                  );
+                })}
+                <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                  <p className="text-xs text-slate-500 flex items-start gap-2">
+                    <Info size={14} className="text-primary mt-0.5" />
+                    <span>{step.layouts.find((l: any) => l.layoutType === formData.kitchenLayout)?.note}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step.selectionType === "multiple" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {step.options.map((opt: any) => {
+              const isSelected = (formData[step.field] || []).includes(opt.value);
+              return (
+                <button
+                  key={opt.id}
+                  onClick={() => {
+                    const current = formData[step.field] || [];
+                    const next = isSelected 
+                      ? current.filter((v: string) => v !== opt.value)
+                      : [...current, opt.value];
+                    updateFormData(step.field, next);
+                  }}
+                  className={cn(
+                    "relative p-6 rounded-3xl border-2 text-left transition-all duration-300 group h-full flex flex-col",
+                    isSelected 
+                      ? "border-accent bg-accent/5" 
+                      : "border-slate-100 hover:border-primary/20 bg-white"
+                  )}
+                >
+                   {opt.image && (
+                    <div className="relative aspect-video mb-4 rounded-xl overflow-hidden bg-slate-100">
+                      <Image 
+                        src={opt.image} 
+                        alt={opt.name} 
+                        fill 
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-bold text-primary">{opt.name}</h4>
+                    <div className={cn(
+                      "w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all",
+                      isSelected ? "bg-accent border-accent text-primary" : "border-slate-200"
+                    )}>
+                      {isSelected && <Check size={14} strokeWidth={4} />}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {step.selectionType === "form" && (
+          <div className="max-w-xl mx-auto space-y-6 py-8">
+            <div className="grid grid-cols-1 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-primary flex items-center gap-2">
+                  <User size={16} /> Full Name
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Enter your name"
+                  value={formData.userName || ""}
+                  onChange={(e) => updateFormData("userName", e.target.value)}
+                  className="w-full h-14 px-6 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-accent transition-all"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-primary flex items-center gap-2">
+                  <Phone size={16} /> Phone Number
+                </label>
+                <input 
+                  type="tel" 
+                  placeholder="Your 10-digit mobile number"
+                  value={formData.userPhone || ""}
+                  onChange={(e) => updateFormData("userPhone", e.target.value)}
+                  className="w-full h-14 px-6 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-accent transition-all"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-primary flex items-center gap-2">
+                  <MapPin size={16} /> Project Location (City)
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Bangalore, Mumbai"
+                  value={formData.userLocation || ""}
+                  onChange={(e) => updateFormData("userLocation", e.target.value)}
+                  className="w-full h-14 px-6 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-accent transition-all"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Results calculation & rendering
+function CalculationResults({ activeCalculator, formData, onReset, formatCurrency }: any) {
+  const [estimate, setEstimate] = useState({ min: 0, max: 0 });
+
+  useEffect(() => {
+    // Logic for calculation based on calculator type
+    let base = 0;
+    
+    if (activeCalculator.slug === "full-home") {
+      const bhkMultipliers: any = { "1_bhk": 450000, "2_bhk": 650000, "3_bhk": 850000, "4_bhk": 1200000, "5_bhk_plus": 1500000 };
+      base = bhkMultipliers[formData.bhkType] || 500000;
+      
+      if (formData.bhkType_size === "large") base *= 1.2;
+      
+      const packageMult: any = { "essentials": 1, "premium": 1.4, "luxe": 1.9 };
+      base *= (packageMult[formData.packageSelection] || 1);
+    } 
+    else if (activeCalculator.slug === "kitchen") {
+      const layoutBase: any = { "l_shaped": 150000, "straight": 100000, "u_shaped": 200000, "parallel": 180000 };
+      base = layoutBase[formData.kitchenLayout] || 150000;
+      
+      const packageMult: any = { "essentials": 1, "premium": 1.5, "luxe": 2.2, "custom_package": 1.3 };
+      base *= (packageMult[formData.kitchenPackageSelection] || 1);
+    }
+    else if (activeCalculator.slug === "wardrobe") {
+      base = 45000;
+      const finishMult: any = { "laminate": 1, "membrane": 1.3, "acrylic": 1.7 };
+      base *= (finishMult[formData.wardrobeFinish] || 1);
+      
+      if (formData.wardrobeAccessories?.length > 0) {
+        base += formData.wardrobeAccessories.length * 5000;
+      }
+    }
+
+    setEstimate({
+      min: Math.floor((base * 0.95) / 1000) * 1000,
+      max: Math.ceil((base * 1.15) / 1000) * 1000,
+    });
+  }, [activeCalculator, formData]);
+
+  const whatsappMessage = `Hello Ambadas Kitchens! I just generated a ${activeCalculator.title} estimate.
+  
+Details:
+${Object.entries(formData).filter(([k]) => !k.includes('user')).map(([k, v]) => `- ${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join('\n')}
+
+Estimate: ${formatCurrency(estimate.min)} - ${formatCurrency(estimate.max)}
+
+Customer Info:
+Name: ${formData.userName}
+Phone: ${formData.userPhone}
+Location: ${formData.userLocation}
+
+Please contact me for a detailed quote!`;
+
+  return (
+    <div className="h-full flex flex-col items-center justify-center text-center space-y-10 py-10">
+      <motion.div 
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        className="w-24 h-24 bg-accent/20 text-primary rounded-[2.5rem] flex items-center justify-center"
+      >
+        <Check size={48} strokeWidth={3} />
+      </motion.div>
+
+      <div className="space-y-4">
+        <h2 className="text-4xl font-display font-black text-primary tracking-tight">Your Estimate is Ready!</h2>
+        <p className="text-slate-500 max-w-md mx-auto">
+          Based on your selections, here is the approximate factory-cost estimate for your project.
+        </p>
+      </div>
+
+      <div className="bg-primary p-10 md:p-14 rounded-[3.5rem] text-white shadow-2xl relative overflow-hidden w-full max-w-2xl group">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-accent/20 blur-[80px] rounded-full translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 blur-[60px] rounded-full -translate-x-1/2 translate-y-1/2" />
+        
+        <div className="relative z-10 space-y-8">
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-accent font-black text-xs uppercase tracking-[0.3em]">Estimated Budget Range</span>
+            <div className="text-4xl md:text-6xl font-display font-black tracking-tighter text-accent flex items-center gap-4 flex-wrap justify-center">
+              <span>{formatCurrency(estimate.min)}</span>
+              <span className="text-white/20 text-2xl font-light">—</span>
+              <span>{formatCurrency(estimate.max)}</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 py-6 border-y border-white/10">
+            <div className="text-center">
+              <p className="text-[10px] text-white/40 uppercase font-black tracking-widest mb-1">Project Type</p>
+              <p className="font-bold text-sm">{activeCalculator.title}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[10px] text-white/40 uppercase font-black tracking-widest mb-1">Package</p>
+              <p className="font-bold text-sm">{formData.packageSelection || formData.kitchenPackageSelection || "Standard"}</p>
+            </div>
+          </div>
+
+          <a 
+            href={`https://wa.me/919448396322?text=${encodeURIComponent(whatsappMessage)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full h-16 bg-[#25D366] text-white rounded-2xl font-black flex items-center justify-center gap-3 hover:scale-[1.02] transition-all shadow-xl shadow-black/20"
+          >
+            <FaWhatsapp size={24} />
+            GET DETAILED QUOTE ON WHATSAPP
+          </a>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-6 w-full max-w-2xl">
+        <div className="flex-1 p-6 bg-slate-50 rounded-3xl border border-slate-100 flex items-start gap-4 text-left">
+          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-primary shadow-sm flex-shrink-0">
+            <Info size={18} />
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-primary mb-1">What's included?</h4>
+            <p className="text-[11px] text-slate-500 leading-relaxed">Factory-finish cabinets, branded hardware (Hettich/Hafele), 10-year warranty, and professional installation.</p>
+          </div>
+        </div>
+        <button 
+          onClick={onReset}
+          className="px-8 py-6 text-slate-400 font-bold hover:text-primary transition-colors flex items-center justify-center gap-2"
+        >
+          <ArrowRight size={18} className="rotate-180" /> Start Over
+        </button>
+      </div>
+    </div>
   );
 }

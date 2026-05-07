@@ -1,0 +1,10 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#fdf2f2" rx="10"/>
+  <!-- Counter A -->
+  <rect x="50" y="50" width="300" height="50" fill="#ecd4d4" stroke="#e0b8b8" stroke-width="1.5"/>
+  <!-- Counter B -->
+  <rect x="50" y="200" width="300" height="50" fill="#ecd4d4" stroke="#e0b8b8" stroke-width="1.5"/>
+  <!-- Labels -->
+  <text x="190" y="83" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="#334155">A</text>
+  <text x="190" y="233" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="#334155">B</text>
+</svg>

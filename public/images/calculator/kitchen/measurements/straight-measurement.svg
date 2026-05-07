@@ -1,0 +1,7 @@
+<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="200" fill="#fdf2f2" rx="10"/>
+  <!-- Counter A -->
+  <rect x="80" y="75" width="240" height="50" fill="#ecd4d4" stroke="#e0b8b8" stroke-width="1.5"/>
+  <!-- Labels -->
+  <text x="190" y="108" font-family="Inter, sans-serif" font-size="28" font-weight="600" fill="#334155">A</text>
+</svg>

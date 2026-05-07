@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -94,7 +93,7 @@ export function FactoryUSP() {
               transition={{ delay: 0.7 }}
             >
               <Button asChild variant="accent" size="lg" className="w-full sm:w-auto text-primary group font-bold">
-                <Link href="/our-process">
+                <Link href="/our-process" className="flex items-center">
                   Know Our Process
                   <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Link>
