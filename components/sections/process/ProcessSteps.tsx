@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Users, 
@@ -83,7 +84,25 @@ const phases = [
 
 export function ProcessSteps() {
   const [activeTab, setActiveTab] = useState(phases[0].id);
+  const searchParams = useSearchParams();
   
+  useEffect(() => {
+    const phase = searchParams.get("phase");
+    if (phase && phases.find(p => p.id === phase)) {
+      setActiveTab(phase);
+      
+      // Scroll to section after a short delay to ensure rendering
+      const timer = setTimeout(() => {
+        const element = document.getElementById("process-steps");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
+
   const currentPhase = phases.find(p => p.id === activeTab) || phases[0];
 
   return (

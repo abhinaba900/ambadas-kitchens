@@ -76,7 +76,7 @@ export function Process() {
               <div className="mt-auto pt-6 border-t border-slate-50 w-full flex items-center justify-between">
                 <span className="text-sm font-bold text-slate-400">{phase.steps}</span>
                 <Link 
-                  href="/our-process" 
+                  href={`/our-process?phase=${phase.title.split(' ')[0].toLowerCase()}`} 
                   className="inline-flex items-center gap-2 text-primary font-bold text-sm hover:text-accent transition-colors"
                 >
                   View Chronology <ArrowRight size={16} />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ProcessHero } from "@/components/sections/process/ProcessHero";
@@ -27,7 +27,9 @@ export default function OurProcessPage() {
       <main className="flex-1 overflow-x-hidden">
         <ProcessHero />
         <ProcessOverview />
-        <ProcessSteps />
+        <Suspense fallback={<div className="h-96 bg-slate-50 animate-pulse rounded-[40px] m-12" />}>
+          <ProcessSteps />
+        </Suspense>
         <ProcessTimeline />
         <ProcessWhy />
         <ProcessTransparency />
