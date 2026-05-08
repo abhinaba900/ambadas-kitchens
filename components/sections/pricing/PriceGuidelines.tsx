@@ -7,44 +7,53 @@ import { cn } from "@/lib/utils";
 export function PriceGuidelines() {
   const tiers = [
     {
-      name: "Basic Kitchen",
-      price: "1,200 - 1,500",
-      description: "Essential, high-quality solution for rental properties or low-use kitchens.",
+      name: "Elegance",
+      rates: {
+        kitchen: "1,500",
+        wardrobe: "1,250"
+      },
+      description: "BWP Ply Kitchen & MR Ply Rooms with high-quality Laminate finishes.",
       features: [
-        "Combi Plywood Core",
-        "Economic Laminate Finish",
-        "Standard SS Hinges",
-        "PVC Edge Banding",
-        "Basic Wire Baskets"
+        "BWP Ply (Kitchen Core)",
+        "MR Ply (Wardrobe Core)",
+        "Laminate Finish",
+        "HDHMR Shutters (Kitchen)",
+        "Hettich Standard Hardware"
       ],
       accent: "bg-slate-100",
       border: "border-slate-200"
     },
     {
-      name: "Mid-Range Kitchen",
-      price: "1,800 - 2,500",
-      description: "Most popular choice. Perfectly balances premium aesthetics with durability.",
+      name: "Marbello",
+      rates: {
+        kitchen: "1,800",
+        wardrobe: "1,500"
+      },
+      description: "Enhanced durability with HDHMR shutters and premium hardware.",
       features: [
-        "Gold Grade Gurjan Plywood",
-        "1.0mm Glossy Laminate",
+        "Gurjan Plywood Core",
+        "High-Gloss Laminate",
         "Soft-Close German Hinges",
-        "Tandem Box Drawers",
-        "Extended Warranty"
+        "HDHMR Shutters (All)",
+        "Tandem Box Drawers"
       ],
       accent: "bg-secondary/10",
       border: "border-secondary/20",
       featured: true
     },
     {
-      name: "Premium Kitchen",
-      price: "2,800+",
-      description: "Luxurious finish and top-of-the-line hardware for high-end homes.",
+      name: "Ultima",
+      rates: {
+        kitchen: "2,200",
+        wardrobe: "1,750"
+      },
+      description: "Luxury finishes with BWP shutters and integrated lighting.",
       features: [
-        "BWP HDMR / Solid Wood",
-        "Acrylic / PU Lacquer Finish",
-        "Blum / Hafele Hardware",
-        "High-Gloss Seamless Edge",
-        "Premium Integrated Lighting"
+        "Full BWP Plywood Core",
+        "Acrylic / PU Finishes",
+        "BWP Shutters (Vanity)",
+        "Premium Integrated Lighting",
+        "Lifetime Hardware Warranty"
       ],
       accent: "bg-primary/5",
       border: "border-primary/10"
@@ -87,9 +96,21 @@ export function PriceGuidelines() {
                 {tier.name}
               </h3>
               
-              <div className="flex items-baseline gap-1 mb-6">
-                <span className="text-3xl font-black text-primary">₹{tier.price}</span>
-                <span className="text-slate-400 text-sm font-bold">/ sq.ft.</span>
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                  <span className="text-slate-500 text-xs font-bold uppercase tracking-wider">Kitchen</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xl font-black text-primary">₹{tier.rates.kitchen}</span>
+                    <span className="text-slate-400 text-[10px] font-bold">/ sq.ft.</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                  <span className="text-slate-500 text-xs font-bold uppercase tracking-wider">Wardrobe</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xl font-black text-primary">₹{tier.rates.wardrobe}</span>
+                    <span className="text-slate-400 text-[10px] font-bold">/ sq.ft.</span>
+                  </div>
+                </div>
               </div>
 
               <p className="text-slate-500 text-sm mb-8 leading-relaxed font-medium">

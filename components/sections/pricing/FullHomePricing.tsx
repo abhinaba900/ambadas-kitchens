@@ -8,25 +8,46 @@ import { motion } from "framer-motion";
 export function FullHomePricing() {
   const packages = [
     {
-      name: "Essential",
-      price: "₹4.5L - ₹6L",
-      description: "Functional designs for modern living on a budget.",
-      features: ["L-Shaped Kitchen", "Master Bedroom Wardrobe", "TV Unit", "Shoe Rack", "Basic False Ceiling"],
+      name: "Elegance",
+      price: "₹4.5L - ₹9L",
+      description: "High-quality essentials with factory precision.",
+      features: [
+        "2 BHK starting at ₹4.50L",
+        "3 BHK starting at ₹5.50L",
+        "Villa starting at ₹9.00L",
+        "BWP Ply Kitchen (Laminate)",
+        "MR Ply Wardrobes",
+        "Hettich Hardware"
+      ],
       color: "bg-blue-500",
     },
     {
-      name: "Luxury",
-      price: "₹7.5L - ₹10L",
-      description: "Premium finishes and sophisticated high-end aesthetic.",
-      features: ["Island Kitchen", "2 Sliding Wardrobes", "Premium TV Wall", "Bar Unit", "Full Custom Lighting"],
+      name: "Marbello",
+      price: "₹5.5L - ₹10L",
+      description: "Enhanced finishes and superior material selection.",
+      features: [
+        "2 BHK starting at ₹5.50L",
+        "3 BHK starting at ₹6.50L",
+        "Villa starting at ₹10.00L",
+        "HDHMR Shutters (Kitchen)",
+        "Hinged Wardrobes with Lofts",
+        "Hettich German Hardware"
+      ],
       color: "bg-accent",
       popular: true,
     },
     {
-      name: "Elite",
-      price: "₹12L+",
-      description: "Uber-luxury interiors with advanced automation and marble finishes.",
-      features: ["Smart Kitchen", "Walk-in Closets", "Home Theatre Setup", "Statement Wall Panels", "Luxury Hardware"],
+      name: "Ultima",
+      price: "₹6.5L - ₹11L",
+      description: "The ultimate luxury with premium materials throughout.",
+      features: [
+        "2 BHK starting at ₹6.50L",
+        "3 BHK starting at ₹7.50L",
+        "Villa starting at ₹11.00L",
+        "Premium BWP Shutters",
+        "Walk-in Closet Ready",
+        "Lifetime Hardware Warranty"
+      ],
       color: "bg-primary-light",
     },
   ];

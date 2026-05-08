@@ -38,7 +38,7 @@ export function InteriorsHero() {
             <span className="inline-block px-4 py-1.5 bg-accent text-primary font-bold text-sm uppercase tracking-wider rounded-full mb-8 shadow-lg shadow-accent/20">
               Complete Home Solutions
             </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white leading-[1.1]">
+            <h1 className="text-5xl md:text-7xl lg:text-7xl font-display font-bold text-white leading-[1.1]">
               Complete Home Interiors, <br />
               <span className="text-accent underline decoration-white/20 underline-offset-8">Designed & Delivered</span>
             </h1>

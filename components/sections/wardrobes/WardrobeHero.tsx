@@ -37,7 +37,7 @@ export function WardrobeHero() {
             <span className="inline-block px-4 py-1.5 bg-accent text-primary font-bold text-sm uppercase tracking-wider rounded-full mb-8 shadow-lg shadow-accent/20">
               Wardrobes Designed for Perfection
             </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white leading-[1.1]">
+            <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold text-white leading-[1.1]">
               Custom Wardrobes <br />
               <span className="text-accent">Designed for Your Space</span>
             </h1>
