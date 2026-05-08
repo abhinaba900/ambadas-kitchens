@@ -13,8 +13,6 @@ import { Phone, ArrowRight } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { Testimonials } from "@/components/sections/Testimonials";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
-import { StickyMobileBar } from "@/components/ui/StickyMobileBar";
 import { useModal } from "@/lib/ModalContext";
 
 export default function PortfolioPage() {
@@ -140,10 +138,6 @@ export default function PortfolioPage() {
       </main>
 
       <Footer />
-      
-      {/* Conversion Overlays */}
-      <WhatsAppButton />
-      <StickyMobileBar />
     </div>
   );
 }

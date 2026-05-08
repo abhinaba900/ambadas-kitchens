@@ -12,8 +12,6 @@ import { InteriorsProcess } from "@/components/sections/interiors/InteriorsProce
 import { InteriorsTestimonials } from "@/components/sections/interiors/InteriorsTestimonials";
 import { InteriorsCTA } from "@/components/sections/interiors/InteriorsCTA";
 import { ExpertSuggestion } from "@/components/ui/ExpertSuggestion";
-import { StickyMobileBar } from "@/components/ui/StickyMobileBar";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -41,10 +39,6 @@ export default function InteriorsPage() {
       </main>
       
       <Footer />
-      
-      {/* Conversion Overlays */}
-      <WhatsAppButton />
-      <StickyMobileBar />
     </div>
   );
 }

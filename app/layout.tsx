@@ -20,6 +20,9 @@ export const metadata: Metadata = {
 
 import { ModalProvider } from "@/lib/ModalContext";
 import { ConsultationModal } from "@/components/ui/ConsultationModal";
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { StickyMobileBar } from "@/components/ui/StickyMobileBar";
+import Script from "next/script";
 
 export default function RootLayout({
   children,
@@ -39,7 +42,18 @@ export default function RootLayout({
         <ModalProvider>
           {children}
           <ConsultationModal />
+          <WhatsAppButton />
+          <StickyMobileBar />
         </ModalProvider>
+
+        <Script id="zoho-salesiq-setup" strategy="afterInteractive">
+          {`window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}`}
+        </Script>
+        <Script 
+          id="zsiqscript" 
+          src="https://salesiq.zohopublic.in/widget?wc=siq269acc48ca034d43c8c260739bd24bc4a6507b9969d39d8491649a24437730a0" 
+          strategy="afterInteractive" 
+        />
       </body>
     </html>
   );

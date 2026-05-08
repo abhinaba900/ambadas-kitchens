@@ -10,8 +10,6 @@ import { ProcessTransparency } from "@/components/sections/process/ProcessTransp
 import { ProcessFactory } from "@/components/sections/process/ProcessFactory";
 import { ProcessFAQ } from "@/components/sections/process/ProcessFAQ";
 import { ProcessFinalCTA } from "@/components/sections/process/ProcessFinalCTA";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
-import { StickyMobileBar } from "@/components/ui/StickyMobileBar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -39,10 +37,6 @@ export default function OurProcessPage() {
       </main>
       
       <Footer />
-      
-      {/* Conversion Overlays */}
-      <WhatsAppButton />
-      <StickyMobileBar />
     </div>
   );
 }

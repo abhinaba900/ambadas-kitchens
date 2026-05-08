@@ -11,8 +11,6 @@ import { Process } from "@/components/sections/Process";
 import { PricingCalculator } from "@/components/sections/pricing/PricingCalculator";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
-import { StickyMobileBar } from "@/components/ui/StickyMobileBar";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 
 export default function Home() {
   return (
@@ -34,10 +32,6 @@ export default function Home() {
       </main>
       
       <Footer />
-      
-      {/* Conversion Overlays */}
-      <WhatsAppButton />
-      <StickyMobileBar />
     </div>
   );
 }

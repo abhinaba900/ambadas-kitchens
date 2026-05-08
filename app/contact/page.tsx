@@ -8,8 +8,6 @@ import { WhatsAppStrip } from "@/components/sections/contact/WhatsAppStrip";
 import { LocationMap } from "@/components/sections/contact/LocationMap";
 import { BusinessDetails } from "@/components/sections/contact/BusinessDetails";
 import { ContactFinalCTA } from "@/components/sections/contact/ContactFinalCTA";
-import { StickyMobileBar } from "@/components/ui/StickyMobileBar";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -33,10 +31,6 @@ export default function ContactPage() {
       </main>
       
       <Footer />
-      
-      {/* Conversion Overlays */}
-      <WhatsAppButton />
-      <StickyMobileBar />
     </div>
   );
 }

@@ -214,11 +214,11 @@ export function DesignStyles() {
   };
 
   return (
-    <section className="section-padding bg-[#fafafa]">
+    <section className="py-12 md:py-12 xl:py-24  bg-[#fafafa]">
       <div className="container mx-auto px-4 md:px-8">
         
         {/* Header & Filter System */}
-        <div className="mb-12 flex flex-col xl:flex-row xl:items-end justify-between gap-8">
+        <div className="mb-12 flex flex-col xl:flex-row xl:items-start justify-between gap-2">
           <div className="max-w-2xl">
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}

@@ -40,11 +40,11 @@ export function FinalCTA() {
               FREE DESIGN CONSULTATION
               <ArrowRight size={20} className="ml-2" />
             </Button>
-            <a href="https://wa.me/919448396322" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center px-10 py-7 h-auto bg-[#25D366] text-white rounded-2xl font-bold hover:scale-105 transition-all shadow-xl">
+            <a href="https://wa.me/919448396322" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center px-10 py-4 h-auto bg-[#25D366] text-white rounded-2xl font-bold hover:scale-105 transition-all shadow-xl">
               <FaWhatsapp size={24} className="mr-3" />
               WHATSAPP NOW
             </a>
-            <a href="tel:+919448396322" className="flex items-center justify-center px-10 py-7 h-auto bg-white text-primary rounded-2xl font-bold hover:bg-slate-50 transition-all shadow-xl">
+            <a href="tel:+919448396322" className="flex items-center justify-center px-10 py-4 h-auto bg-white text-primary rounded-2xl font-bold hover:bg-slate-50 transition-all shadow-xl">
               <Phone size={24} className="mr-3" />
                 CALL 94483 96322
             </a>

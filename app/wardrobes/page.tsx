@@ -12,8 +12,6 @@ import { SmartStorage } from "@/components/sections/wardrobes/SmartStorage";
 import { WardrobeFAQ } from "@/components/sections/wardrobes/WardrobeFAQ";
 import { WardrobeCTA } from "@/components/sections/wardrobes/WardrobeCTA";
 import { ExpertSuggestion } from "@/components/ui/ExpertSuggestion";
-import { StickyMobileBar } from "@/components/ui/StickyMobileBar";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -41,10 +39,6 @@ export default function WardrobesPage() {
       </main>
       
       <Footer />
-      
-      {/* Conversion Overlays */}
-      <WhatsAppButton />
-      <StickyMobileBar />
     </div>
   );
 }
