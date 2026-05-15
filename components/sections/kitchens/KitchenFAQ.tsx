@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Plus, Minus, HelpCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useModal } from "@/lib/ModalContext";
 
 const faqs = [
   {
@@ -28,6 +29,7 @@ const faqs = [
 ];
 
 export function KitchenFAQ() {
+  const { openConsultationModal } = useModal();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -47,7 +49,10 @@ export function KitchenFAQ() {
                 </p>
                 <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4">
                    <p className="font-bold text-primary">Still have questions?</p>
-                   <button className="w-full py-3 bg-accent text-primary font-bold rounded-full hover:bg-primary hover:text-white transition-all shadow-md">
+                   <button 
+                     onClick={() => openConsultationModal()}
+                     className="w-full py-3 bg-accent text-primary font-bold rounded-full hover:bg-primary hover:text-white transition-all shadow-md"
+                   >
                      Talk to an Expert
                    </button>
                 </div>

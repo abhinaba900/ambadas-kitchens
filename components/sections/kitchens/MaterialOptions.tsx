@@ -83,7 +83,7 @@ export function MaterialOptions() {
           ))}
         </div>
         
-        <div className="mt-16 p-8 bg-accent/10 rounded-2xl border border-accent/20 flex flex-col md:flex-row items-center justify-between gap-6">
+        {/* <div className="mt-16 p-8 bg-accent/10 rounded-2xl border border-accent/20 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left space-y-2">
             <h4 className="text-xl font-bold">10-Year Warranty on All Materials</h4>
             <p className="text-slate-400 text-sm">Every kitchen we install comes with a factory-backed guarantee for your peace of mind.</p>
@@ -91,7 +91,7 @@ export function MaterialOptions() {
           <button className="px-8 py-3 bg-accent text-primary font-bold rounded-full hover:bg-white transition-colors">
             Download Catalog
           </button>
-        </div>
+        </div> */}
       </div>
     </section>
   );

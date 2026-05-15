@@ -17,7 +17,8 @@ import {
   Phone,
   User,
   Mail,
-  MapPin
+  MapPin,
+  FileText
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { cn } from "@/lib/utils";
@@ -263,7 +264,13 @@ function isStepValid(step: any, formData: any) {
   if (step.selectionType === "counter") return true; // Has defaults
   if (step.selectionType === "measurement") return true; // Has defaults
   if (step.selectionType === "form") {
-    return formData.userName && formData.userPhone && formData.userPhone.length >= 10;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[6-9]\d{9}$/;
+    
+    return (
+      phoneRegex.test(formData.userPhone || "") && 
+      emailRegex.test(formData.userEmail || "")
+    );
   }
   return true;
 }
@@ -492,47 +499,80 @@ function StepRenderer({ step, formData, updateFormData, onNext }: any) {
         )}
 
         {step.selectionType === "form" && (
-          <div className="max-w-xl mx-auto space-y-6 py-8">
-            <div className="grid grid-cols-1 gap-6">
+          <div className="max-w-2xl mx-auto space-y-6 py-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-primary flex items-center gap-2">
-                  <User size={16} /> Full Name
+                  <User size={16} className="text-accent" /> Full Name
                 </label>
                 <input 
                   type="text" 
                   placeholder="Enter your name"
                   value={formData.userName || ""}
                   onChange={(e) => updateFormData("userName", e.target.value)}
-                  className="w-full h-14 px-6 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-accent transition-all"
+                  className="w-full h-14 px-6 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-primary flex items-center gap-2">
-                  <Phone size={16} /> Phone Number
+                  <Phone size={16} className="text-accent" /> Phone Number
                 </label>
                 <input 
                   type="tel" 
-                  placeholder="Your 10-digit mobile number"
+                  placeholder="10-digit mobile number"
                   value={formData.userPhone || ""}
                   onChange={(e) => updateFormData("userPhone", e.target.value)}
-                  className="w-full h-14 px-6 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-accent transition-all"
+                  className={cn(
+                    "w-full h-14 px-6 rounded-2xl bg-slate-50 border transition-all focus:outline-none focus:ring-2 focus:ring-accent/20",
+                    formData.userPhone && !/^[6-9]\d{9}$/.test(formData.userPhone) 
+                      ? "border-red-300 bg-red-50" 
+                      : "border-slate-200 focus:border-accent"
+                  )}
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-primary flex items-center gap-2">
-                  <MapPin size={16} /> Project Location (City)
+                  <Mail size={16} className="text-accent" /> Email Address
+                </label>
+                <input 
+                  type="email" 
+                  placeholder="your@email.com"
+                  value={formData.userEmail || ""}
+                  onChange={(e) => updateFormData("userEmail", e.target.value)}
+                  className={cn(
+                    "w-full h-14 px-6 rounded-2xl bg-slate-50 border transition-all focus:outline-none focus:ring-2 focus:ring-accent/20",
+                    formData.userEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.userEmail) 
+                      ? "border-red-300 bg-red-50" 
+                      : "border-slate-200 focus:border-accent"
+                  )}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-primary flex items-center gap-2">
+                  <FileText size={16} className="text-accent" /> Floor Plan Type
                 </label>
                 <input 
                   type="text" 
-                  placeholder="e.g. Bangalore, Mumbai"
-                  value={formData.userLocation || ""}
-                  onChange={(e) => updateFormData("userLocation", e.target.value)}
-                  className="w-full h-14 px-6 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-accent transition-all"
+                  placeholder="e.g. 2BHK, 3BHK East Facing"
+                  value={formData.floorPlan || ""}
+                  onChange={(e) => updateFormData("floorPlan", e.target.value)}
+                  className="w-full h-14 px-6 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <label className="text-sm font-bold text-primary flex items-center gap-2">
+                  <MapPin size={16} className="text-accent" /> Full Address / Project Location
+                </label>
+                <textarea 
+                  placeholder="Enter your detailed address or project location"
+                  value={formData.userAddress || ""}
+                  onChange={(e) => updateFormData("userAddress", e.target.value)}
+                  className="w-full min-h-[100px] p-6 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all resize-none"
                 />
               </div>
             </div>
           </div>
-        )}
+        ) || null}
       </div>
     </div>
   );
@@ -610,7 +650,9 @@ Estimate: ${formatCurrency(estimate.min)} - ${formatCurrency(estimate.max)}
 Customer Info:
 Name: ${formData.userName}
 Phone: ${formData.userPhone}
-Location: ${formData.userLocation}
+Email: ${formData.userEmail}
+Address: ${formData.userAddress}
+Floor Plan: ${formData.floorPlan}
 
 Please contact me for a detailed quote!`;
 

@@ -3,6 +3,7 @@
 import React from "react";
 import { MessageSquare, PenTool, Factory, Truck } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const steps = [
   {
@@ -67,10 +68,12 @@ export function KitchenProcess() {
         </div>
         
         <div className="mt-20 flex justify-center">
-           <button className="px-10 py-4 border-2 border-accent text-accent font-bold rounded-full hover:bg-accent hover:text-primary transition-all flex items-center gap-2 group">
-             View Detailed Process Guide
-             <span className="group-hover:translate-x-1 transition-transform">→</span>
-           </button>
+           <Link href="/our-process">
+             <button className="px-10 py-4 border-2 border-accent text-accent font-bold rounded-full hover:bg-accent hover:text-primary transition-all flex items-center gap-2 group">
+               View Detailed Process Guide
+               <span className="group-hover:translate-x-1 transition-transform">→</span>
+             </button>
+           </Link>
         </div>
       </div>
     </section>

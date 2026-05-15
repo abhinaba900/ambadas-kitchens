@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/Button";
 import { ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useModal } from "@/lib/ModalContext";
+import { useRouter } from "next/navigation";
 
 export function WardrobeHero() {
   const { openConsultationModal } = useModal();
+  const router = useRouter();
 
   return (
     <section className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden py-24 md:py-32">
@@ -71,7 +73,7 @@ export function WardrobeHero() {
               variant="outline" 
               size="lg" 
               className="border-white text-white hover:bg-white hover:text-primary transition-all text-lg px-12"
-              onClick={() => document.getElementById("wardrobe-types")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => router.push("/portfolio?category=Wardrobes")}
             >
               View Designs
             </Button>

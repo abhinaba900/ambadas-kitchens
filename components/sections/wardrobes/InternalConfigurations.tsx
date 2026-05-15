@@ -73,7 +73,7 @@ export function InternalConfigurations() {
               className="relative h-[600px] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white/5"
             >
               <Image 
-                src="/portfolio/wardrobes/wardrobe-15.webp" 
+                src="/images/wardrobes/internal-config.png" 
                 alt="Internal Wardrobe Configuration with Shelves" 
                 fill
                 className="object-cover brightness-90 group-hover:brightness-100 transition-all duration-700"

@@ -10,11 +10,11 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const showcaseImages = [
-  "/portfolio/kitchens/kitchen-01.webp",
-  "/portfolio/kitchens/kitchen-05.webp",
-  "/portfolio/kitchens/kitchen-08.webp",
-  "/portfolio/kitchens/kitchen-12.webp",
-  "/portfolio/kitchens/kitchen-16.webp",
+  "/images/hero/hero-1.png",
+  "/images/hero/hero-2.png",
+  "/images/hero/hero-3.png",
+  "/images/hero/hero-4.png",
+  "/images/hero/hero-5.png",
 ];
 
 export function Hero() {

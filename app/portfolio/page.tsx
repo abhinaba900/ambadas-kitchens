@@ -28,6 +28,14 @@ export default function PortfolioPage() {
       const category = params.get("category");
       if (category) {
         setActiveCategory(category);
+        
+        // Scroll to filters after a small delay to ensure content is rendered
+        setTimeout(() => {
+          const filterElement = document.getElementById("portfolio-filters");
+          if (filterElement) {
+            filterElement.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 100);
       }
     }
   }, []);

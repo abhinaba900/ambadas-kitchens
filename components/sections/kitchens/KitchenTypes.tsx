@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useModal } from "@/lib/ModalContext";
 
 const kitchenTypes = [
   {
@@ -38,6 +39,8 @@ const kitchenTypes = [
 ];
 
 export function KitchenTypes() {
+  const { openConsultationModal } = useModal();
+  
   return (
     <section className="section-padding bg-slate-50">
       <div className="container mx-auto">
@@ -97,7 +100,10 @@ export function KitchenTypes() {
               Our experts can design a unique layout tailored to your specific
               space constraints.
             </p>
-            <button className="px-6 py-3 bg-accent text-primary font-bold rounded-full hover:bg-white transition-colors">
+            <button 
+              onClick={() => openConsultationModal()}
+              className="px-6 py-3 bg-accent text-primary font-bold rounded-full hover:bg-white transition-colors"
+            >
               Get Expert Advice
             </button>
           </motion.div>

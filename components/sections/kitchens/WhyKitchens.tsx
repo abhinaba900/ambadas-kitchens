@@ -3,6 +3,7 @@
 import React from "react";
 import { Settings, Ruler, ShieldCheck, Drill } from "lucide-react";
 import { motion } from "framer-motion";
+import { useModal } from "@/lib/ModalContext";
 
 const reasons = [
   {
@@ -28,6 +29,8 @@ const reasons = [
 ];
 
 export function WhyKitchens() {
+  const { openConsultationModal } = useModal();
+
   return (
     <section className="section-padding bg-primary text-white">
       <div className="container mx-auto">
@@ -66,7 +69,10 @@ export function WhyKitchens() {
            <div className="z-10 text-primary">
              <h3 className="text-2xl md:text-4xl font-bold mb-4 font-display">Ready for a Lifetime Kitchen?</h3>
              <p className="text-lg md:text-xl font-medium mb-8 max-w-2xl mx-auto opacity-80">Stop worrying about termite or moisture damage with our BWP plywood solutions.</p>
-             <button className="px-10 py-4 bg-primary text-white font-bold rounded-full hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl">
+             <button 
+               onClick={() => openConsultationModal()}
+               className="px-10 py-4 bg-primary text-white font-bold rounded-full hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl"
+             >
                Book a Showroom Visit
              </button>
            </div>

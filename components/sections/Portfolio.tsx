@@ -5,36 +5,51 @@ import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { ChevronRight, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function Portfolio() {
+  const router = useRouter();
+
+  const handleCategoryClick = (category: string) => {
+    // Map categories to match PortfolioFilter.tsx
+    const categoryMap: { [key: string]: string } = {
+      "Modular Kitchen": "Kitchens",
+      "Full Home Interiors": "Full Home Interiors",
+      "Wardrobes": "Wardrobes"
+    };
+
+    const targetCategory = categoryMap[category] || "All";
+    router.push(`/portfolio?category=${encodeURIComponent(targetCategory)}`);
+  };
   const projects = [
     {
       id: 1,
       title: "Modern Minimalist Kitchen",
       location: "Indiranagar, Bangalore",
-      image: "/hero-kitchen.png", // Reusing hero image for now as portfolio
+      image: "/images/portfolio/kitchen-minimalist.png",
       category: "Modular Kitchen",
     },
     {
       id: 2,
       title: "Luxury Wardrobe Series",
       location: "Whitefield, Bangalore",
-      image: "/hero-kitchen.png", 
-      category: "Full Home Interiors",
+      image: "/images/portfolio/wardrobe-luxury.png", 
+      category: "Wardrobes",
     },
     {
       id: 3,
       title: "Compact Urban Kitchen",
       location: "Koramangala, Bangalore",
-      image: "/hero-kitchen.png",
+      image: "/images/portfolio/kitchen-urban.png",
       category: "Modular Kitchen",
     },
     {
       id: 4,
       title: "Industrial Style Kitchen",
       location: "HSR Layout, Bangalore",
-      image: "/hero-kitchen.png",
-      category: "Full Home Interiors",
+      image: "/images/portfolio/kitchen-industrial.png",
+      category: "Modular Kitchen",
     },
   ];
 
@@ -50,10 +65,12 @@ export function Portfolio() {
               Explore our latest modular kitchen and interior designs delivered across Bangalore. Each project is a testament to our factory precision and design excellence.
             </p>
           </div>
-          <Button variant="outline" className="hidden md:flex group">
-            View Full Portfolio
-            <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <Link href="/portfolio">
+            <Button variant="outline" className="hidden md:flex group">
+              View Full Portfolio
+              <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
@@ -64,7 +81,8 @@ export function Portfolio() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500"
+              onClick={() => handleCategoryClick(project.category)}
+              className="group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer"
             >
               <div className="aspect-[16/10] relative overflow-hidden">
                 <Image
@@ -95,7 +113,9 @@ export function Portfolio() {
         </div>
 
         <div className="mt-12 text-center md:hidden">
-          <Button variant="outline" className="w-full">View Full Portfolio</Button>
+          <Link href="/portfolio">
+            <Button variant="outline" className="w-full">View Full Portfolio</Button>
+          </Link>
         </div>
       </div>
     </section>
