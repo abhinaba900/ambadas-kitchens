@@ -5,8 +5,10 @@ import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { ChevronRight, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useModal } from "@/lib/ModalContext";
 
 export function PortfolioHero() {
+  const { openConsultationModal } = useModal();
   const images = [
     "https://images.unsplash.com/photo-1742280879518-ada47b660ccd?q=80&w=2070&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&q=80&w=800",
@@ -69,12 +71,14 @@ export function PortfolioHero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center gap-4"
           >
-            <Button variant="accent" size="lg" className="w-full sm:w-auto text-primary group">
+            <Button 
+              variant="accent" 
+              size="lg" 
+              className="w-full sm:w-auto text-primary group"
+              onClick={() => openConsultationModal({ category: "Full Home Interiors" })}
+            >
               Start Your Project
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button variant="outline" size="lg" className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-primary">
-              Get Free Quote
             </Button>
           </motion.div>
         </div>

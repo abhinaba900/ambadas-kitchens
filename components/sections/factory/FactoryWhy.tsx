@@ -67,8 +67,8 @@ export function FactoryWhy() {
               className="aspect-square relative rounded-3xl overflow-hidden shadow-2xl skew-y-1"
             >
               <img 
-                src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=2070&auto=format&fit=crop" 
-                alt="Factory production line"
+                src="/images/factory-built.png" 
+                alt="State-of-the-art precision woodworking factory floor"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent z-10" />

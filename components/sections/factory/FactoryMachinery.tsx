@@ -10,25 +10,25 @@ export function FactoryMachinery() {
       title: "CNC Cutting Machine",
       description: "German-engineered precision for millimeter-perfect cuts on every panel.",
       icon: Cpu,
-      image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/machinery/cnc-cutting.png",
     },
     {
       title: "Auto Edge Banding",
       description: "Seamless finish with high-pressure heat bonding for zero-glue edge joints.",
       icon: Layers,
-      image: "https://images.unsplash.com/photo-1580920461922-ee625ecbfc27?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/machinery/edge-banding.png",
     },
     {
       title: "Multi-Drill Boring",
       description: "Pre-drilled hardware holes ensure perfect fit for all hinges and slides.",
       icon: Scissors,
-      image: "https://images.unsplash.com/photo-1518107616985-bd48230d3b20?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/machinery/multi-drill.png",
     },
     {
       title: "Lamination Press",
       description: "High-pressure bonding for scratch-resistant and long-lasting finishes.",
       icon: CheckCircle,
-      image: "https://images.unsplash.com/photo-1542385151-efd9000785a0?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/machinery/lamination-press.png",
     },
   ];
 

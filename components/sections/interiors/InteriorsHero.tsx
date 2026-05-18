@@ -69,12 +69,6 @@ export function InteriorsHero() {
               Get Free Consultation
               <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Link href="/portfolio">
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary transition-all text-lg px-12 h-16 backdrop-blur-sm">
-                View Projects
-                <Play className="ml-2 w-4 h-4 fill-current" />
-              </Button>
-            </Link>
           </motion.div>
           
           <motion.div 

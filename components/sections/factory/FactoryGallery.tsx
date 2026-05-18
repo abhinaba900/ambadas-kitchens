@@ -6,32 +6,32 @@ import { motion } from "framer-motion";
 export function FactoryGallery() {
   const images = [
     {
-      src: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop",
+      src: "/images/gallery/cnc-precision.png",
       title: "CNC Precision",
       category: "Machine",
     },
     {
-      src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
+      src: "/images/gallery/skilled-workforce.png",
       title: "Skilled Workforce",
       category: "Team",
     },
     {
-      src: "https://images.unsplash.com/photo-1717386255773-1e3037c81788?q=80&w=2070&auto=format&fit=crop",
+      src: "/images/gallery/production-line.png",
       title: "Production Line",
       category: "Facility",
     },
     {
-      src: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=2070&auto=format&fit=crop",
+      src: "/images/gallery/quality-check.png",
       title: "Quality Check",
       category: "Process",
     },
     {
-      src: "https://images.unsplash.com/photo-1580920461922-ee625ecbfc27?q=80&w=2070&auto=format&fit=crop",
+      src: "/images/gallery/edge-finisher.png",
       title: "Edge Finisher",
       category: "Machine",
     },
     {
-      src: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop",
+      src: "/images/gallery/hardware-prep.png",
       title: "Hardware Prep",
       category: "Assembly",
     },

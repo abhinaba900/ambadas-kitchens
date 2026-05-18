@@ -4,8 +4,10 @@ import React from "react";
 import { ArrowRight } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useModal } from "@/lib/ModalContext";
 
 export function FactoryMidCTA() {
+  const { openConsultationModal } = useModal();
   return (
     <section className="py-20 bg-accent overflow-hidden relative">
       <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/10 -skew-x-12 translate-x-1/2" />
@@ -25,7 +27,10 @@ export function FactoryMidCTA() {
                <FaWhatsapp size={20} className="mr-2" />
                Chat on WhatsApp
             </a>
-            <button className="flex items-center justify-center px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-slate-900 transition-all shadow-xl group">
+            <button 
+              className="flex items-center justify-center px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-slate-900 transition-all shadow-xl group"
+              onClick={() => openConsultationModal({ category: "Factory Tour Visit" })}
+            >
                Request a Visit
                <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </button>

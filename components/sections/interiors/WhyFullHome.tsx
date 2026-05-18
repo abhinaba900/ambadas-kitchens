@@ -4,6 +4,7 @@ import React from "react";
 import { Palette, PiggyBank, Zap, UserCheck, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
 const points = [
   {
@@ -53,10 +54,12 @@ export function WhyFullHome() {
                     "Doing interiors room by room? You may end up spending more."
                   </p>
                </div>
-               <Button variant="accent" size="lg" className="w-full sm:w-auto text-primary font-bold mt-4">
-                 Get Full Home Quote
-                 <ChevronRight className="ml-2" />
-               </Button>
+               <Link href="/pricing#calculator" className="w-full sm:w-auto block sm:inline-block mt-4">
+                 <Button variant="accent" size="lg" className="w-full text-primary font-bold">
+                   Get Full Home Quote
+                   <ChevronRight className="ml-2" />
+                 </Button>
+               </Link>
             </div>
           </div>
           

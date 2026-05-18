@@ -72,7 +72,7 @@ export function LocationMap() {
               </div>
 
               <Button variant="accent" size="lg" className="w-full text-primary flex items-center justify-center" asChild>
-                <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+                <a href="https://www.google.com/maps/search/?api=1&query=Ambadas+Kitchens+Sy+No+156+Godown+No+30+Dommasandra+Village+Main+Road+Bengaluru+Urban+562125" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
                   <Navigation size={18} className="mr-2" />
                   Get Navigation
                 </a>

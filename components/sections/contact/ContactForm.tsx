@@ -205,7 +205,11 @@ export function ContactForm() {
             <div className="p-8 border border-slate-100 rounded-3xl bg-slate-50/50 space-y-4 italic text-slate-500">
               <p>“The consultation was extremely helpful. They actually listened to my specific storage needs and suggested a layout that saved so much space!”</p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-200" />
+                <img 
+                  src="/images/testimonials/rajeshwari.png" 
+                  alt="Mrs. Rajeshwari" 
+                  className="w-10 h-10 rounded-full object-cover border border-slate-100 shadow-sm"
+                />
                 <div>
                   <p className="text-sm font-bold text-primary not-italic">Mrs. Rajeshwari</p>
                   <p className="text-xs not-italic">Sarjapur Road, Bangalore</p>

@@ -1,11 +1,53 @@
 "use client";
 
-import React from "react";
-import { ChevronRight, Home } from "lucide-react";
+import React, { useState } from "react";
+import { ChevronRight, Home, X, CheckCircle } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useModal } from "@/lib/ModalContext";
 
 export function FullHomePricing() {
+  const { openConsultationModal } = useModal();
+  const [selectedPkg, setSelectedPkg] = useState<any>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    address: ""
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSelectPackage = (pkg: any) => {
+    setSelectedPkg(pkg);
+    setIsSubmitted(false);
+    setFormData({ name: "", phone: "", email: "", address: "" });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Store in localStorage
+    const inquiryData = {
+      package: {
+        name: selectedPkg.name,
+        price: selectedPkg.price,
+        description: selectedPkg.description
+      },
+      user: formData,
+      timestamp: new Date().toISOString()
+    };
+    
+    localStorage.setItem("package_inquiry", JSON.stringify(inquiryData));
+    
+    // Set success state
+    setIsSubmitted(true);
+  };
+
   const packages = [
     {
       name: "Elegance",
@@ -91,7 +133,10 @@ export function FullHomePricing() {
                 </ul>
               </div>
 
-              <button className={`w-full mt-10 py-4 rounded-2xl font-bold transition-all ${pkg.popular ? 'bg-primary text-white hover:bg-slate-900' : 'bg-slate-100 text-primary hover:bg-slate-200'}`}>
+              <button 
+                onClick={() => handleSelectPackage(pkg)}
+                className={`w-full mt-10 py-4 rounded-2xl font-bold transition-all ${pkg.popular ? 'bg-primary text-white hover:bg-slate-900' : 'bg-slate-100 text-primary hover:bg-slate-200'}`}
+              >
                 Select Package
               </button>
             </motion.div>
@@ -108,7 +153,10 @@ export function FullHomePricing() {
                 <FaWhatsapp size={20} className="mr-3" />
                 WhatsApp for Estimate
               </a>
-              <button className="flex items-center justify-center px-10 py-5 bg-white/10 text-white rounded-2xl font-bold hover:bg-white/20 transition-all border border-white/20">
+              <button 
+                onClick={() => openConsultationModal({ category: "Site Visit Request" })}
+                className="flex items-center justify-center px-10 py-5 bg-white/10 text-white rounded-2xl font-bold hover:bg-white/20 transition-all border border-white/20"
+              >
                 Book a Site Visit Instead
                 <ChevronRight className="ml-2 w-5 h-5" />
               </button>
@@ -116,6 +164,134 @@ export function FullHomePricing() {
           </div>
         </div>
       </div>
+      {/* Modal Overlay */}
+      <AnimatePresence>
+        {selectedPkg && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-primary/60 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="relative w-full max-w-lg bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 overflow-hidden flex flex-col text-slate-800"
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => setSelectedPkg(null)}
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <X size={20} />
+              </button>
+
+              {!isSubmitted ? (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-2">
+                    <span className="text-accent font-bold uppercase tracking-widest text-xs">Configure Plan</span>
+                    <h3 className="text-2xl font-bold text-primary">Inquire for {selectedPkg.name}</h3>
+                    <p className="text-sm text-slate-500">
+                      You selected the <strong className="text-primary">{selectedPkg.name}</strong> package starting at <strong className="text-accent">{selectedPkg.price}</strong>. Please provide your details to schedule a call with our design expert.
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-slate-400 mb-2 tracking-wider">Full Name</label>
+                      <input 
+                        required
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="John Doe"
+                        className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-sm font-medium transition-all"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-slate-400 mb-2 tracking-wider">Phone Number</label>
+                        <input 
+                          required
+                          type="tel"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          placeholder="+91 XXXXX XXXXX"
+                          className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-sm font-medium transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-slate-400 mb-2 tracking-wider">Email Address</label>
+                        <input 
+                          required
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          placeholder="john@example.com"
+                          className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-sm font-medium transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-slate-400 mb-2 tracking-wider">Site / Delivery Address</label>
+                      <textarea 
+                        required
+                        rows={3}
+                        name="address"
+                        value={formData.address}
+                        onChange={handleInputChange}
+                        placeholder="Please enter your site address in Bangalore..."
+                        className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-sm font-medium transition-all resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    className="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-slate-900 transition-all shadow-lg hover:shadow-xl"
+                  >
+                    Confirm Package Selection
+                  </button>
+                </form>
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-8 space-y-6 flex flex-col items-center"
+                >
+                  <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-green-500 shadow-inner">
+                    <CheckCircle size={40} className="stroke-[2.5]" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-primary">Inquiry Successful!</h3>
+                    <p className="text-slate-500 text-sm max-w-sm leading-relaxed">
+                      Thank you, <strong className="text-primary">{formData.name}</strong>. We have saved your preference for the <strong className="text-primary">{selectedPkg.name}</strong> package ({selectedPkg.price}) and stored the selection in our database.
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-left w-full text-xs space-y-2">
+                    <p className="text-slate-400 font-bold uppercase tracking-wider mb-1">Stored Package Details:</p>
+                    <div className="flex justify-between"><span className="text-slate-500">Package Name:</span> <span className="font-bold text-primary">{selectedPkg.name}</span></div>
+                    <div className="flex justify-between"><span className="text-slate-500">Pricing Range:</span> <span className="font-bold text-accent">{selectedPkg.price}</span></div>
+                    <div className="flex justify-between"><span className="text-slate-500">Site Location:</span> <span className="font-bold text-primary text-right truncate max-w-[200px]">{formData.address}</span></div>
+                    <div className="flex justify-between"><span className="text-slate-500">Contact Number:</span> <span className="font-bold text-primary">{formData.phone}</span></div>
+                  </div>
+
+                  <button 
+                    onClick={() => setSelectedPkg(null)}
+                    className="w-full bg-slate-100 hover:bg-slate-200 text-primary py-4 rounded-2xl font-bold transition-all"
+                  >
+                    Close Window
+                  </button>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

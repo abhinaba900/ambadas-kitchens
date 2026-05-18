@@ -26,7 +26,7 @@ const options = [
     title: "Visit Showroom",
     description: "Experience our designs firsthand at our Bangalore gallery.",
     icon: MapPin,
-    action: "https://maps.google.com",
+    action: "https://www.google.com/maps/search/?api=1&query=Ambadas+Kitchens+Sy+No+156+Godown+No+30+Dommasandra+Village+Main+Road+Bengaluru+Urban+562125",
     label: "Get Directions",
     color: "bg-red-50 text-red-600",
   },
@@ -49,6 +49,8 @@ export function ContactOptions() {
             <motion.a
               key={index}
               href={option.action}
+              target={option.action.startsWith("http") ? "_blank" : undefined}
+              rel={option.action.startsWith("http") ? "noopener noreferrer" : undefined}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

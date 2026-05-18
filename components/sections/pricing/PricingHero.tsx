@@ -54,9 +54,11 @@ export function PricingHero() {
                 Chat with Expert
               </a>
             </Button>
-            <Button variant="outline" size="lg" className="h-16 px-10 text-lg font-bold border-white text-white hover:bg-white hover:text-primary transition-all shadow-xl">
-              View Detailed Price List
-              <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+            <Button variant="outline" size="lg" className="h-16 px-10 text-lg font-bold border-white text-white hover:bg-white hover:text-primary transition-all shadow-xl" asChild>
+              <a href="#calculator" className="w-full flex items-center justify-center">
+                Calculate Pricing
+                <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </a>
             </Button>
           </motion.div>
         </div>

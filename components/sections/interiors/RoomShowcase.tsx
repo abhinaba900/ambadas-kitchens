@@ -42,26 +42,27 @@ export function RoomShowcase() {
         </p>
       </div>
 
-      <div className="flex flex-nowrap overflow-x-auto pb-12 px-6 gap-6 no-scrollbar snap-x snap-mandatory">
+      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
         {rooms.map((room, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="min-w-[300px] md:min-w-[500px] h-[400px] md:h-[600px] relative rounded-3xl overflow-hidden snap-center group shadow-xl"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: index * 0.1 }}
+            className="h-[350px] sm:h-[450px] md:h-[500px] relative rounded-3xl overflow-hidden group shadow-xl"
           >
             <Image
               src={room.image}
               alt={room.name}
               fill
               unoptimized
-              className="object-cover group-hover:scale-105 transition-transform duration-1000"
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-            <div className="absolute bottom-10 left-10 text-white">
-              <span className="text-accent font-bold text-sm uppercase tracking-widest mb-2 block">{room.style}</span>
-              <h3 className="text-3xl font-display font-bold">{room.name}</h3>
+            <div className="absolute bottom-8 left-8 right-8 text-white">
+              <span className="text-accent font-bold text-xs uppercase tracking-widest mb-2 block">{room.style}</span>
+              <h3 className="text-2xl md:text-3xl font-display font-bold">{room.name}</h3>
             </div>
           </motion.div>
         ))}

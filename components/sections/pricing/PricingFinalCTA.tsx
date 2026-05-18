@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/Button";
 import { Calendar, ChevronRight, Sparkles } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useModal } from "@/lib/ModalContext";
 
 export function PricingFinalCTA() {
+  const { openConsultationModal } = useModal();
   return (
     <section className="py-24 bg-white relative overflow-hidden">
       {/* Background Decor */}
@@ -45,6 +47,7 @@ export function PricingFinalCTA() {
                 variant="outline"
                 size="lg"
                 className="w-full sm:w-auto h-20 px-12 text-xl font-black rounded-[2rem] bg-white border-2 border-primary/10 hover:border-primary group"
+                onClick={() => openConsultationModal({ category: "Detailed Price Consultation" })}
               >
                 <Calendar size={24} className="mr-3" />
                 Book Consultation

@@ -56,7 +56,6 @@ export function InteriorsProcess() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-16 gap-x-12 relative">
-          <div className="hidden lg:block absolute top-[40px] left-[10%] right-[10%] h-[2px] bg-white/10 z-0" />
           
           {steps.map((step, index) => (
             <motion.div
@@ -67,6 +66,11 @@ export function InteriorsProcess() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="flex flex-col items-center text-center group relative z-10"
             >
+              {/* Connecting Line for desktop (only for steps 1-2 and 4-5) */}
+              {index !== 2 && index !== 5 && (
+                <div className="hidden lg:block absolute top-[40px] left-[50%] w-full h-[2px] bg-white/10 z-0 pointer-events-none" />
+              )}
+              
               <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center text-primary shadow-2xl group-hover:bg-accent group-hover:text-primary transition-all duration-500 mb-8 relative border-4 border-primary">
                 <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-accent text-primary font-bold text-xs flex items-center justify-center border-4 border-primary">
                   0{index + 1}

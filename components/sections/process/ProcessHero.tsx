@@ -4,8 +4,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { ChevronRight, MousePointer2 } from "lucide-react";
+import { useModal } from "@/lib/ModalContext";
 
 export function ProcessHero() {
+  const { openConsultationModal } = useModal();
   return (
     <section className="relative pt-32 pb-20 overflow-hidden bg-slate-50">
       {/* Abstract Background Elements */}
@@ -48,11 +50,13 @@ export function ProcessHero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
-            <Button variant="accent" size="lg" className="w-full sm:w-auto text-primary group">
-              Start Your Project
-              <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button variant="outline" size="lg" className="w-full sm:w-auto">
+           
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="w-full sm:w-auto hover:bg-primary hover:text-white transition-all duration-300"
+              onClick={() => openConsultationModal()}
+            >
               Get Free Consultation
             </Button>
           </motion.div>

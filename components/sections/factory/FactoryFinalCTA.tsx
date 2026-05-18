@@ -5,6 +5,7 @@ import { ArrowRight, ShieldCheck } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
 export function FactoryFinalCTA() {
   return (
@@ -44,10 +45,12 @@ export function FactoryFinalCTA() {
                  WhatsApp Now
                </Button>
              </a>
-             <Button variant="outline" size="lg" className="w-full sm:w-auto h-20 px-12 text-xl font-bold border-white text-white hover:bg-white hover:text-primary transition-all rounded-3xl">
-               Get Estimate
-               <ArrowRight size={22} className="ml-2" />
-             </Button>
+             <Link href="/pricing#calculator" className="w-full sm:w-auto">
+               <Button variant="outline" size="lg" className="w-full h-20 px-12 text-xl font-bold border-white text-white hover:bg-white hover:text-primary transition-all rounded-3xl">
+                 Get Estimate
+                 <ArrowRight size={22} className="ml-2" />
+               </Button>
+             </Link>
           </div>
           
           <p className="text-white/40 text-sm font-medium italic">

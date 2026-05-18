@@ -5,8 +5,10 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight, Factory, ShieldCheck, Zap } from "lucide-react";
 import Link from "next/link";
+import { useModal } from "@/lib/ModalContext";
 
 export function FactoryHero() {
+  const { openConsultationModal } = useModal();
   return (
     <section className="relative min-h-[90vh] flex items-center pt-24 overflow-hidden bg-primary">
       {/* Background Image with Overlay */}
@@ -59,12 +61,14 @@ export function FactoryHero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 pt-4"
           >
-            <Button variant="accent" size="lg" className="text-primary font-black shadow-xl hover:scale-105 transition-transform group">
+            <Button 
+              variant="accent" 
+              size="lg" 
+              className="text-primary font-black shadow-xl hover:scale-105 transition-transform group"
+              onClick={() => openConsultationModal({ category: "Factory Direct Interiors" })}
+            >
               Get a Quote
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary transition-colors">
-              Explore Our Work
             </Button>
           </motion.div>
 

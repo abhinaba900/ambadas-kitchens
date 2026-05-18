@@ -4,6 +4,7 @@ import React from "react";
 import { Check, ArrowRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
+import { useModal } from "@/lib/ModalContext";
 
 const plans = [
   {
@@ -79,6 +80,7 @@ const plans = [
 ];
 
 export function BudgetBlocks() {
+  const { openConsultationModal } = useModal();
   return (
     <section className="section-padding bg-slate-50 relative overflow-hidden">
       {/* Decorative Blur */}
@@ -191,6 +193,7 @@ export function BudgetBlocks() {
                   variant={plan.highlight ? "accent" : "outline"} 
                   size="lg" 
                   className={`w-full font-black uppercase tracking-widest text-xs py-6 group ${!plan.highlight && "border-2 border-primary text-primary hover:bg-primary hover:text-white"}`}
+                  onClick={() => openConsultationModal({ category: "Full Home Interiors", budget: plan.title })}
                 >
                   Consult Designer
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />

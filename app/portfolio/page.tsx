@@ -138,7 +138,7 @@ export default function PortfolioPage() {
                 </a>
               </div>
               <p className="text-slate-400 font-medium pt-8">
-                Based in Bangalore | 20+ Years Experience | Factory Perfection
+                Based in Bangalore | 23+ Years Experience | Factory Perfection
               </p>
             </motion.div>
           </div>
